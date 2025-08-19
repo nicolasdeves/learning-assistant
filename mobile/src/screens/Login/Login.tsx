@@ -1,10 +1,13 @@
-import { Text, View } from "react-native";
+import { Text, View, Button } from "react-native";
+import { loginWithGoogle } from "../../auth/authentication";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export function Login() {
 
   return (
-    <View>
+    <SafeAreaView>
         <Text> Login </Text>
-    </View>
+        <Button title="Entrar com o Google" onPress={loginWithGoogle}/>
+    </SafeAreaView>
   );
 }
