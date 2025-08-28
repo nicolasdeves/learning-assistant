@@ -2,27 +2,18 @@ import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { loginWithGoogle } from "../../auth/authentication";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { makeNavigation } from "../../service/navigation.service";
 
 export function Login() {
+  const navigation = makeNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Logo */}
-        {/* <Image 
-          source={require("../../assets/logo.png")} // substitua pelo seu logo
-          style={styles.logo}
-        /> */}
 
-        {/* Título */}
         <Text style={styles.title}>Bem-vindo(a)!</Text>
         <Text style={styles.subtitle}>Faça login para continuar</Text>
-
-        {/* Botão Google */}
-        <TouchableOpacity style={styles.button} onPress={loginWithGoogle}>
-          {/* <Image 
-            source={require("../../assets/google-icon.png")} // ícone do Google
-            style={styles.icon}
-          /> */}
+        <TouchableOpacity style={styles.button} onPress={() => {loginWithGoogle(navigation)}}>
           <Text style={styles.buttonText}>Entrar com Google</Text>
         </TouchableOpacity>
       </View>

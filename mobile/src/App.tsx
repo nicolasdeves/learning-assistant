@@ -2,9 +2,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Home } from "./screens/Home/Home";
 import { Login } from "./screens/Login/Login";
+import { RootStackParamList } from "./interfaces/navbar";
 
 function App() {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <NavigationContainer>

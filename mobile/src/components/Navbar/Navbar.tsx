@@ -3,28 +3,35 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../../styles/global";
 import { assets } from "../../assets/assets";
 import { navbarStyles } from "../../styles/navbar";
-import { useNavigation } from "@react-navigation/native";
+import { makeNavigation } from "../../service/navigation.service";
+import { useRoute } from "@react-navigation/native";
 
 
 export function Navbar() {
 
-    const navigation = useNavigation()
+    const navigation = makeNavigation()
+    const route = useRoute()
+
+    const getIconStyle = (routeName: string) => {
+        return route.name === routeName ? navbarStyles.navbarImageSelected : navbarStyles.navbarImage;
+    }
+
     return (
         <SafeAreaView style={navbarStyles.navbar}>
-            <TouchableOpacity onPress={() => console.log('clicou')}>
-                <Image source={assets.brain} style={navbarStyles.navbarImage} />
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Image source={assets.brain} style={getIconStyle("Home")} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Image source={assets.community} style={getIconStyle("Community")} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Image source={assets.volunteer} style={getIconStyle("Tutor")} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => console.log('clicou')}>
-                <Image source={assets.community} style={navbarStyles.navbarImage} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => console.log('clicou')}>
-                <Image source={assets.volunteer} style={navbarStyles.navbarImage} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => console.log('clicou')}>
-                <Image source={assets.hamburger} style={navbarStyles.navbarImageSelected} />
+                <Image source={assets.hamburger} style={getIconStyle("Hamburger")} />
             </TouchableOpacity>
         </SafeAreaView>
     );

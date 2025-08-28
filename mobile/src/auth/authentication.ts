@@ -1,17 +1,38 @@
+import { getAuth } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { makeNavigation } from '../service/navigation.service';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../interfaces/navbar';
 
 GoogleSignin.configure({
   webClientId: '496449435162-4mgmtjekgqkcauqofhvnsljjh7jc7uq5.apps.googleusercontent.com',
 });
 
-export async function loginWithGoogle() {
-    try {
-        await GoogleSignin.hasPlayServices();
-        const data = await GoogleSignin.signIn();
-        console.log(data)
-        
-    } catch (error) {
-      console.log('Erro completo:', JSON.stringify(error, null, 2));
-    }
+const auth = getAuth();
+
+export async function loginWithGoogle(navigation: NativeStackNavigationProp<RootStackParamList>) {
+  try {
+      await GoogleSignin.hasPlayServices();
+      const data = await GoogleSignin.signIn();
+      console.log(data)
+      navigation.navigate("Home")
+
+  } catch (error) {
+    navigation.navigate("Login")
+    console.log('Erro completo:', JSON.stringify(error, null, 2));
   }
+}
   
+export async function getLoggedUser() {
+  return auth.currentUser;
+}
+
+export async function signOutUser(navigation: NativeStackNavigationProp<RootStackParamList>) {
+  try {
+      navigation.navigate("Login")
+      auth.signOut()
+  } catch(error: any) {
+    console.log(error)
+  }
+}
+
