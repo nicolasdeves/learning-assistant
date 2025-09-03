@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AiModule } from './ai/ai.module';
+import { AiModule } from './AI/ai.module';
 import { ConfigModule } from '@nestjs/config';
+import { DefaultModule } from './Default/default.module';
+import { TopicModule } from './Topic/topic.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
-  }), AiModule],
+  }), 
+  AiModule,
+  DefaultModule,
+  TopicModule
+  ],
   controllers: [],
   providers: [],
 })
