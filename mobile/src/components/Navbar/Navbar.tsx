@@ -29,10 +29,6 @@ export function Navbar() {
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                 <Image source={assets.volunteer} style={getIconStyle("Tutor")} />
             </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => console.log('clicou')}>
-                <Image source={assets.hamburger} style={getIconStyle("Hamburger")} />
-            </TouchableOpacity>
         </SafeAreaView>
     );
 }

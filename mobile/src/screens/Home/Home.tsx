@@ -10,18 +10,10 @@ export function Home() {
 
   return (
     <SafeAreaView style={ styles.container }>
-        <Header />
-
-        {/* <Modal
-          visible={true}
-          title="Teste"
-          content="Conteudo"
-          onClose={() => {console.log("MODAL")}}
-        /> */}
+      <Header />
 
       <View style={{ 
         flex: 1, 
-        // justifyContent: "center", 
         alignItems: "center", 
       }}> 
         <InfoCard
@@ -35,12 +27,9 @@ export function Home() {
           description="Veja seu histórico semanal e mensal"
           onPress={() => { console.log("in press") }}
         />
-
-        
       </View>
-
+      
       <Navbar/>
-
     </SafeAreaView>
   );
 }

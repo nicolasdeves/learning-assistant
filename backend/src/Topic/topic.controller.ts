@@ -6,7 +6,7 @@ export class TopicController {
     constructor(private readonly topicService: TopicService) {}
 
     @Get()
-    async test() {
+    async get() {
         const aa = await this.topicService.getAll()
         return aa
     }

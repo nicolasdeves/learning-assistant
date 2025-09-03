@@ -14,6 +14,8 @@
 
 - npx react-native start --reset-cache
 
+- ./gradlew clean
+
 ## Technologies
 
 - React Native

@@ -2,10 +2,8 @@ import { Image, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { headerStyles } from "../../styles/header";
 import { assets } from "../../assets/assets";
-import { navbarStyles } from "../../styles/navbar";
 
 export function Header() {
-
     return (
         <SafeAreaView>
             <View style={headerStyles.header}>
@@ -20,7 +18,7 @@ export function Header() {
 
 
                 <TouchableOpacity onPress={() => console.log('clicou')} >
-                    <Image source={assets.fire_lit} style={headerStyles.headerImage} />
+                    <Image source={assets.hamburger} style={headerStyles.headerImage} />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
