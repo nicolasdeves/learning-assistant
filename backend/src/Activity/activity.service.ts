@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaClient, Topic } from '@prisma/client';
+import { Activity, Prisma, PrismaClient } from '@prisma/client';
 import { DefaultService } from 'src/Default/default.service';
 
 @Injectable()
-export class TopicService extends DefaultService<
-  Topic,
-  Prisma.TopicCreateInput,
-  Prisma.TopicUpdateInput,
+export class ActivityService extends DefaultService<
+  Activity,
+  Prisma.ActivityCreateInput,
+  Prisma.ActivityUpdateInput,
   PrismaClient['topic'],
   Prisma.TopicWhereInput
 > {
