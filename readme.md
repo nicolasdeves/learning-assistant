@@ -6,6 +6,10 @@
 
 - npm start run
 
+- npx prisma generate
+
+- npx prisma migrate dev --name `migration_name`
+
 ### Mobile
 
 - npm start 
@@ -18,5 +22,10 @@
 
 ## Technologies
 
+- NestJS
+
+- Gemini
+
 - React Native
+
 
