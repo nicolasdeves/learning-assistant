@@ -1,8 +1,8 @@
-import { getAuth } from '@react-native-firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithCredential } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { makeNavigation } from '../service/navigation.service';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../interfaces/navbar';
+
 
 GoogleSignin.configure({
   webClientId: '496449435162-4mgmtjekgqkcauqofhvnsljjh7jc7uq5.apps.googleusercontent.com',
@@ -13,17 +13,26 @@ const auth = getAuth();
 export async function loginWithGoogle(navigation: NativeStackNavigationProp<RootStackParamList>) {
   try {
       await GoogleSignin.hasPlayServices();
-      const data = await GoogleSignin.signIn();
-      console.log(data)
-      navigation.navigate("Home")
 
+      const userInfo = await GoogleSignin.signIn();
+
+      const idToken = userInfo.data?.idToken
+
+      if (!idToken) throw new Error('Não foi possível obter idToken do Google');
+
+      const googleCredential = GoogleAuthProvider.credential(idToken);
+
+      await signInWithCredential(auth, googleCredential);
+
+      navigation.navigate("Home");
   } catch (error) {
-    navigation.navigate("Login")
-    console.log('Erro completo:', JSON.stringify(error, null, 2));
+      console.log('Erro completo:', JSON.stringify(error, null, 2));
+      navigation.navigate("Login");
   }
 }
   
 export async function getLoggedUser() {
+  console.log(auth)
   return auth.currentUser;
 }
 
