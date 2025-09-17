@@ -10,22 +10,32 @@ datasource db {
 model Topic {
   id         Int         @id @default(autoincrement())
   name       String
-  activities Activity[]
   createdAt  DateTime    @default(now()) @map("created_at")
   updatedAt  DateTime    @updatedAt @map("updated_at")
+
+  activities Activity[]
   topicUser  TopicUser[]
+  levels     Level[]
 
   @@map("topic")
 }
 
 model TopicUser {
-  id           Int   @id @default(autoincrement())
-  googleUserId Int   @map("google_user_id")
-  topicId      Int   @map("topic_id")
+  id           Int @id @default(autoincrement())
+  googleUserId String @map("google_user_id")
+  topicId      Int @map("topic_id")
 
   topic Topic @relation(fields: [topicId], references: [id])
 
   @@map("topic_user")
+}
+
+model Level {
+  id      Int    @id @default(autoincrement())
+  name    String
+  topicId Int    @map("topic_id")
+
+  topic Topic @relation(fields: [topicId], references: [id])
 }
 
 model Activity {
@@ -34,9 +44,10 @@ model Activity {
   topicId   Int        @map("topic_id")
   name      String
   date      DateTime
-  exercises Exercise[]
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
+
+  exercises Exercise[]
 
   topic Topic @relation(fields: [topicId], references: [id])
 
@@ -46,9 +57,10 @@ model Activity {
 model ExerciseType {
   id          Int        @id @default(autoincrement())
   description String
-  exercises   Exercise[]
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  exercises   Exercise[]
 
   @@map("exercise_type")
 }
@@ -63,8 +75,8 @@ model Exercise {
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
 
-  exerciseType ExerciseType @relation(fields: [exerciseTypeId], references: [id])
-  activity     Activity     @relation(fields: [activityId], references: [id])
+  exerciseType ExerciseType  @relation(fields: [exerciseTypeId], references: [id])
+  activity     Activity      @relation(fields: [activityId], references: [id])
   alternatives Alternative[]
   answers      Answer[]
 

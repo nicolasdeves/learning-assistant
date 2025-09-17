@@ -7,7 +7,20 @@ export class TopicController {
 
     @Get()
     async get() {
-        const aa = await this.topicService.getAll()
-        return aa
+        return await this.topicService.getAll()
+    }
+
+    @Get('user/:googleUserId')
+    async getByUser(
+        @Param('googleUserId') googleUserId: string
+    ) {
+        console.log(googleUserId)
+        return await this.topicService.getByConditions({
+            topicUser: {
+                some: {
+                    googleUserId: String(googleUserId)
+                }
+            }
+        })
     }
 }

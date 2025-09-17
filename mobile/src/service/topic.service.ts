@@ -1,9 +1,9 @@
 import { TopicResponse } from "../interfaces/topics";
 import { api } from "./axios.service";
 
-export async function getTopicsByUser(userId: string): Promise<TopicResponse[] | null> {
+export async function getTopicsByUser(googleUserId: string): Promise<TopicResponse[] | null> {
     try {
-        const response = await api.get(`/topics/user/${userId}`);
+        const response = await api.get(`/topics/user/${googleUserId}`);
         return response.data;
     } catch (error: any) {
         console.log(error)
