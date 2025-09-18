@@ -18,16 +18,12 @@ export function Navbar() {
 
     return (
         <SafeAreaView style={navbarStyles.navbar}>
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                <Image source={assets.brain} style={getIconStyle("Home")} />
+            <TouchableOpacity onPress={() => navigation.navigate("Learning")}>
+                <Image source={assets.brain} style={getIconStyle("Learning")} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Community")}>
                 <Image source={assets.community} style={getIconStyle("Community")} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Image source={assets.volunteer} style={getIconStyle("Tutor")} />
             </TouchableOpacity>
         </SafeAreaView>
     );

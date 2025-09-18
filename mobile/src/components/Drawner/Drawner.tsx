@@ -1,10 +1,12 @@
 import { Animated, View, Text, TouchableOpacity, Dimensions } from "react-native";
 import { useRef, useEffect } from "react";
+import { makeNavigation } from "../../service/navigation.service";
 
 const { width } = Dimensions.get("window");
 
 export function Drawer({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const animation = useRef(new Animated.Value(isOpen ? 1 : 0)).current;
+  const navigation = makeNavigation();
 
   useEffect(() => {
     Animated.timing(animation, {
@@ -45,12 +47,8 @@ export function Drawer({ isOpen, onClose }: { isOpen: boolean, onClose: () => vo
         <Text>Fechar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => console.log("Clicou Home")} style={{ marginBottom: 15 }}>
+      <TouchableOpacity onPress={() => { navigation.navigate("Home"); onClose(); } } style={{ marginBottom: 15 }}>
         <Text>Home</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => console.log("Clicou Perfil")} style={{ marginBottom: 15 }}>
-        <Text>Perfil</Text>
       </TouchableOpacity>
     </Animated.View>
   );
