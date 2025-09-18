@@ -8,22 +8,24 @@ datasource db {
 }
 
 model Topic {
-  id         Int         @id @default(autoincrement())
-  name       String
-  createdAt  DateTime    @default(now()) @map("created_at")
-  updatedAt  DateTime    @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  activities Activity[]
-  topicUser  TopicUser[]
-  levels     Level[]
+  activities  Activity[]
+  topicUser   TopicUser[]
+  levels      Level[]
+  communities Community[]
+  notifications Notification[]
 
   @@map("topic")
 }
 
 model TopicUser {
-  id           Int @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   googleUserId String @map("google_user_id")
-  topicId      Int @map("topic_id")
+  topicId      Int    @map("topic_id")
 
   topic Topic @relation(fields: [topicId], references: [id])
 
@@ -39,30 +41,24 @@ model Level {
 }
 
 model Activity {
-  id        Int        @id @default(autoincrement())
-  userId    Int        @map("user_id")
-  topicId   Int        @map("topic_id")
-  name      String
-  date      DateTime
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  id      Int      @id @default(autoincrement())
+  name    String
+  date    DateTime
+  googleUserId  Int      @map("google_user_id")
+  topicId Int      @map("topic_id")
+
+  conclusion String? // user conclusion (IA)
+  positive   String? //positive points (IA)
+  negative   String? //negative points (IA)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   exercises Exercise[]
 
   topic Topic @relation(fields: [topicId], references: [id])
 
   @@map("activity")
-}
-
-model ExerciseType {
-  id          Int        @id @default(autoincrement())
-  description String
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-
-  exercises   Exercise[]
-
-  @@map("exercise_type")
 }
 
 model Exercise {
@@ -81,6 +77,17 @@ model Exercise {
   answers      Answer[]
 
   @@map("exercise")
+}
+
+model ExerciseType {
+  id          Int      @id @default(autoincrement())
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  exercises Exercise[]
+
+  @@map("exercise_type")
 }
 
 model Alternative {
@@ -106,4 +113,42 @@ model Answer {
   exercise Exercise @relation(fields: [exerciseId], references: [id])
 
   @@map("answer")
+}
+
+model Community {
+  id        Int      @id @default(autoincrement())
+  name      String
+  topicId   Int      @map("topic_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  topic          Topic           @relation(fields: [topicId], references: [id])
+  communityUsers CommunityUser[]
+}
+
+model CommunityUser {
+  id           Int    @id @default(autoincrement())
+  googleUserId String @map("google_user_id")
+  communityId  Int    @map("community_id")
+
+  community Community @relation(fields: [communityId], references: [id])
+  messages  Message[]
+}
+
+model Message {
+  id              Int    @id @default(autoincrement())
+  content         String
+  communityUserId Int
+
+  communityUser CommunityUser @relation(fields: [communityUserId], references: [id])
+}
+
+model Notification {
+  id           Int      @id @default(autoincrement())
+  content      String
+  googleUserId String   @map("google_user_id")
+  topicId Int
+  date         DateTime
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  topic Topic @relation(fields: [topicId], references: [id])
 }
