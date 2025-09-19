@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DefaultModule } from './Default/default.module';
 import { TopicModule } from './Topic/topic.module';
 import { ActivityModule } from './Activity/activity.module';
+import { TopicUserModule } from './TopicUser/topicUser.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -12,7 +13,8 @@ import { ActivityModule } from './Activity/activity.module';
   AiModule,
   DefaultModule,
   TopicModule,
-  ActivityModule
+  ActivityModule,
+  TopicUserModule
   ],
   controllers: [],
   providers: [],
