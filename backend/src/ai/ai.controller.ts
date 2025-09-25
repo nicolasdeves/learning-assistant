@@ -1,18 +1,36 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe } from "@nestjs/common";
 import { AiService } from "./ai.service";
+import { TopicService } from "src/Topic/topic.service";
 
 @Controller('ai')
 export class AiController {
-    constructor(private readonly aiService: AiService) {}
+    constructor(
+        private readonly aiService: AiService,
+        private readonly topicService: TopicService
+    ) {}
 
-    @Get()
-    test() {
+    @Get('/tip/topic/:topicId')
+    async generateTip(
+        @Param('topicId', ParseIntPipe) topicId: number 
+    ) {
         try {
-            const response = this.aiService.generateContent("Test");
+            // Para nao ficar consumindo créditos...
+            return 'Para melhorar sua pronúncia, tente imitar falantes nativos. Ouça podcasts, filmes ou músicas e repita as frases em voz alta. Isso ajuda a pegar a entonação e o ritmo do idioma!';
 
-            return response
+            // const topic = await this.topicService.getOne(topicId);
+
+            // const message = topic && "Gere uma dica curta de " + topic.name;
+            // const response = message && await this.aiService.generateContent(message);
+
+            // const cleanResponse = response && response.replace(/```json\n?|\n?```/g, '');
+
+            // const jsonResponse = cleanResponse && JSON.parse(cleanResponse);
+            // console.log(jsonResponse.response);
+
+            // return jsonResponse.response;
         } catch (error) {
-            return error.message
+            console.log(error);
+            return error.message;
         }
     }
 }

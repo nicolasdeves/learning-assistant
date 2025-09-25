@@ -17,7 +17,7 @@ export class DefaultService<
     return this.delegate.findMany();
   }
 
-  async getOne(id: number): Promise<Model | null> {
+  async getOne(id: Number): Promise<Model | null> {
     return this.delegate.findUnique({ where: { id } });
   }
 
