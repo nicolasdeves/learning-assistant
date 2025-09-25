@@ -14,11 +14,10 @@ export class TopicController {
     async getByUser(
         @Param('googleUserId') googleUserId: string
     ) {
-        console.log(googleUserId)
         return await this.topicService.getByConditions({
             topicUser: {
                 some: {
-                    googleUserId: String(googleUserId)
+                    googleUserId
                 }
             }
         })

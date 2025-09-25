@@ -8,8 +8,6 @@ export async function linkUserToTopic(googleUserId: string, topicId: number) {
     };
     const response = await api.post(`topicUsers`, body);
 
-    console.log('response');
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error)

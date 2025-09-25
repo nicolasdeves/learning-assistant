@@ -9,10 +9,11 @@ export class TopicUserController {
     @Post()
     @HttpCode(201)
     async addTopicUser(
-        @Body() body: Prisma.TopicUserCreateInput
+        @Body() body: Prisma.TopicUserUncheckedCreateInput
     ) {
         try {
-            const topicUser = await this.topicUserService.create(body)
+            const topicUserAlreadyExists = await this.topicUserService.getByConditions(body)
+            const topicUser = !topicUserAlreadyExists && await this.topicUserService.create(body)
 
             return {
                 topicUser

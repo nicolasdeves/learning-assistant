@@ -11,6 +11,7 @@ import { Select } from '../../components/Select/Select';
 import { AnimatedButton } from '../../components/AnimatedButton/AnimatedButton';
 import { Option } from '../../interfaces/option';
 import { linkUserToTopic } from '../../service/topicUser.service';
+import { getTip } from '../../service/ai.service';
 
 const { width } = Dimensions.get('window');
 const halfWidth = (width - 48) / 2; // 16 padding + 16 margin entre cards
@@ -20,7 +21,12 @@ export function Learning() {
   const [userTopics, setUserTopics] = useState<TopicResponse[] | null>(null)
   const [topicsOptions, setTopicsOptions] = useState<Option[] | null>(null)
   const [selectedTopicId, setSelectedTopicId] = useState<number | null>(null)
+  const [selectedTopic, setSelectedTopic] = useState<TopicResponse | null>(null)
+  const [allTopics, setAllTopics] = useState<TopicResponse[] | null>(null)
   const [trigger, setTrigger] = useState<number>(0)
+  const [isChooseTopicOn, setIsChooseTopicOn] = useState<boolean>(false)
+  const [tip, setTip] = useState<string>(" teste de dica")
+
   const totalActivities = 3;
   const completedActivities = 0;
 
@@ -29,18 +35,22 @@ export function Learning() {
   useEffect(() => {
     getUser();
     getAllTopics();
-    getUserTopics()
   }, [])
 
   useEffect(() => {
     getUserTopics()
   }, [trigger])
 
+    useEffect(() => {
+      generateTip();
+  }, [selectedTopicId])
+
 
   const getUser = async () => {
     try {
       const user = await getLoggedUser();
       user ? setGoogleUserId(user.uid) : navigation.navigate("Login")
+      setTrigger(prev => prev + 1)
     } catch (error) {
       console.log("Error on getUser")
     }
@@ -48,8 +58,13 @@ export function Learning() {
 
   const getUserTopics = async () => {
     try {
+      if (!googleUserId) return;
+
       const userTopicResponse = await getTopicsByUser(googleUserId);
       setUserTopics(userTopicResponse)
+
+      userTopicResponse && setSelectedTopic(userTopicResponse[0])
+      console.log(selectedTopic)
 
     } catch (error) {
       console.log("Error on getUserTopics")
@@ -59,6 +74,7 @@ export function Learning() {
   const getAllTopics = async () => {
     try {
       const topicResponse = await getTopics();
+      setAllTopics(topicResponse);
 
       if (topicResponse) {
         const options: Option[] = topicResponse.map(topic => ({
@@ -69,29 +85,51 @@ export function Learning() {
         setTopicsOptions(options)
         setSelectedTopicId(Number(options[0].value))
       }
-
     } catch (error) {
       console.log("Error on getAllTopics")
     }
+  }
 
+  const selectTopic = async (topicSelectedId: number | string) => {
+    console.log('topicSelectedId')
+    console.log(topicSelectedId)
+    const topic = allTopics && allTopics.find(topic => topic.id == Number(topicSelectedId))
+    topic && setSelectedTopic(topic)
   }
 
   const addTopicToUser = async () => {
-    console.log('entrou addTopicToUser')
     selectedTopicId && await linkUserToTopic(googleUserId, selectedTopicId);
     setTrigger(prev => prev + 1)
+    const topic = allTopics && allTopics.find(topic => topic.id == selectedTopicId)
+    topic && setSelectedTopic(topic)
+    setIsChooseTopicOn(false)
+  }
 
+  const changeTopic = async () => {
+    selectedTopic && setSelectedTopicId(selectedTopic.id)
+    selectedTopic && console.log(selectedTopic.id)
+    selectedTopicId && await linkUserToTopic(googleUserId, selectedTopicId);
+    const topic = allTopics && selectedTopic && allTopics.find(topic => topic.id == selectedTopic.id)
+    topic && setSelectedTopic(topic)
+    setIsChooseTopicOn(false)
+  }
+
+  const generateTip = async () => {
+    const tip = selectedTopicId && await getTip(selectedTopicId)
+    console.log('tip')
+    console.log(tip)
+    tip && setTip(tip);
   }
 
   return (
     <Base>
       {
-        userTopics && userTopics.length > 0 && (
+        userTopics && userTopics.length > 0 && !isChooseTopicOn && (
           <View style={styles.container}>
             {/* Card Dica */}
             <FloatingCard style={{ width: '100%' }}>
               <Text style={styles.title}>💡 Dica do Dia</Text>
-              <Text style={styles.content}>Revise palavras novas antes de dormir para memorizar melhor!</Text>
+              <Text style={styles.content}>{tip}</Text>
             </FloatingCard>
 
             {/* Cards lado a lado: Atividades e Próxima Data */}
@@ -112,9 +150,10 @@ export function Learning() {
 
             {/* Cards lado a lado: Atividade Atual e Histórico IA */}
             <View style={styles.row}>
-              <FloatingCard style={{ width: halfWidth }}>
+              <FloatingCard style={{ width: halfWidth }} onPress={() => setIsChooseTopicOn(true)}>
                 <Text style={styles.title}>🏆 Tópico</Text>
-                <Text style={styles.content}>Inglês - Nível C1</Text>
+                <Text style={styles.content}>{selectedTopic?.name}</Text>
+
               </FloatingCard>
 
               <FloatingCard
@@ -148,7 +187,7 @@ export function Learning() {
       }
 
       {
-        ((!userTopics || userTopics.length === 0) && topicsOptions) && (
+        (((!userTopics || userTopics.length === 0))) && topicsOptions && (
           <View style={{ display: "flex", alignSelf: "center", width: '90%' }}>
             <FloatingCard>
               <Text style={styles.title}>✨ Escolha um tópico para começar</Text>
@@ -157,7 +196,7 @@ export function Learning() {
               <Select
                 label="Tópicos disponíveis"
                 options={topicsOptions}
-                onValueChange={(value) => setSelectedTopicId(Number(value))}
+                onValueChange={(value) => selectTopic(value)}
               />
 
               <AnimatedButton
@@ -170,7 +209,33 @@ export function Learning() {
         )
       }
 
+      {
+        isChooseTopicOn && topicsOptions && (
+          <View style={{ display: "flex", alignSelf: "center", width: '90%' }}>
+            <FloatingCard>
+              <Text style={styles.title}>✨ Escolha um tópico para começar</Text>
+              <Text style={styles.content}>Selecione um tópico para começar a aprender!</Text>
 
+              <Select
+                label="Escolha o tópico"
+                options={topicsOptions}
+                onValueChange={(value) => selectTopic(value)}
+              />
+
+              <AnimatedButton
+                title="Trocar tópico"
+                onPress={() => changeTopic()}
+              />
+
+              <AnimatedButton
+                title="Voltar"
+                onPress={() => setIsChooseTopicOn(false)}
+              />
+            </FloatingCard>
+          </View>
+
+        )
+      }
     </Base>
   );
 }

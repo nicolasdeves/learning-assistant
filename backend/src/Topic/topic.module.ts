@@ -7,7 +7,7 @@ import { PrismaClient } from "@prisma/client";
 @Module({
     controllers: [TopicController],
     providers: [TopicService, PrismaClient],
-    exports: [],
+    exports: [TopicService],
     imports: []
 })
 

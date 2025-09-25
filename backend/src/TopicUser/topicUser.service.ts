@@ -5,7 +5,7 @@ import { DefaultService } from 'src/Default/default.service';
 @Injectable()
 export class TopicUserService extends DefaultService<
   TopicUser,
-  Prisma.TopicUserCreateInput,
+  Prisma.TopicUserUncheckedCreateInput,
   Prisma.TopicUserUpdateInput,
   PrismaClient['topicUser'],
   Prisma.TopicUserWhereInput
