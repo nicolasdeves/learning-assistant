@@ -20,6 +20,16 @@ export function Learning() {
   const [googleUserId, setGoogleUserId] = useState<string>("")
   const [userTopics, setUserTopics] = useState<TopicResponse[] | null>(null)
   const [topicsOptions, setTopicsOptions] = useState<Option[] | null>(null)
+  const [levelOptions, setLevelOptions] = useState<Option[]>(
+    [
+      { label: 'Iniciante', value: 'beginner'},
+      { label: 'Intermediário', value: 'intermediate'},
+      { label: 'Avançado', value: 'advanced'},
+    ]
+  )
+
+  const [selectedLevel, setSelectedLevel] = useState<string>('beginner')
+
   const [selectedTopicId, setSelectedTopicId] = useState<number | null>(null)
   const [selectedTopic, setSelectedTopic] = useState<TopicResponse | null>(null)
   const [allTopics, setAllTopics] = useState<TopicResponse[] | null>(null)
@@ -101,14 +111,16 @@ export function Learning() {
   }
 
   const selectTopic = async (topicSelectedId: number | string) => {
-    console.log('topicSelectedId')
-    console.log(topicSelectedId)
     const topic = allTopics && allTopics.find(topic => topic.id == Number(topicSelectedId))
     topic && setSelectedTopic(topic)
   }
 
+  const selectLevel = async (levelSelected: string) => {
+    setSelectedLevel(levelSelected)
+  }
+
   const addTopicToUser = async () => {
-    selectedTopicId && await linkUserToTopic(googleUserId, selectedTopicId);
+    selectedTopicId && await linkUserToTopic(googleUserId, selectedTopicId, selectedLevel);
     setTrigger(prev => prev + 1)
     const topic = allTopics && allTopics.find(topic => topic.id == selectedTopicId)
     topic && setSelectedTopic(topic)
@@ -117,8 +129,7 @@ export function Learning() {
 
   const changeTopic = async () => {
     selectedTopic && setSelectedTopicId(selectedTopic.id)
-    selectedTopic && console.log(selectedTopic.id)
-    selectedTopicId && await linkUserToTopic(googleUserId, selectedTopicId);
+    selectedTopicId && await linkUserToTopic(googleUserId, selectedTopicId, selectedLevel);
     const topic = allTopics && selectedTopic && allTopics.find(topic => topic.id == selectedTopic.id)
     topic && setSelectedTopic(topic)
     setIsChooseTopicOn(false)
@@ -126,8 +137,6 @@ export function Learning() {
 
   const generateTip = async () => {
     const tip = selectedTopicId && await getTip(selectedTopicId)
-    console.log('tip')
-    console.log(tip)
 
     tip && setTip(tip);
   }
@@ -210,9 +219,15 @@ export function Learning() {
                 onValueChange={(value) => selectTopic(value)}
               />
 
+              <Select
+                label="Escolha o nível"
+                options={levelOptions}
+                onValueChange={(value) => selectLevel(String(value))}
+              />
+
               <AnimatedButton
                 title="Começar Aprendizado"
-                onPress={() => setIsChooseTopicOn(false)}
+                onPress={() => addTopicToUser()}
               />
             </FloatingCard>
           </View>
@@ -231,6 +246,12 @@ export function Learning() {
                 label="Escolha o tópico"
                 options={topicsOptions}
                 onValueChange={(value) => selectTopic(value)}
+              />
+
+              <Select
+                label="Escolha o nível"
+                options={levelOptions}
+                onValueChange={(value) => selectLevel(String(value))}
               />
 
               <AnimatedButton
