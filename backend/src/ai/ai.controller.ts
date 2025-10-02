@@ -33,4 +33,30 @@ export class AiController {
             return error.message;
         }
     }
+
+    @Get('/activity/topic/:topicId/level/:level')
+    async generateActivity(
+        @Param('topicId', ParseIntPipe) topicId: number,
+        @Param('level') level: string 
+    ) {
+        try {
+            // Para nao ficar consumindo créditos...
+            // return 'Para melhorar sua pronúncia, tente imitar falantes nativos. Ouça podcasts, filmes ou músicas e repita as frases em voz alta. Isso ajuda a pegar a entonação e o ritmo do idioma!';
+
+            const topic = await this.topicService.getOne(topicId);
+
+            const message = topic && "Gere uma atividade de " + topic.name + "de nível " + level;
+            const response = message && await this.aiService.generateContent(message);
+
+            const cleanResponse = response && response.replace(/```json\n?|\n?```/g, '');
+
+            const jsonResponse = cleanResponse && JSON.parse(cleanResponse);
+            console.log(jsonResponse.response);
+
+            return jsonResponse.response;
+        } catch (error) {
+            console.log(error);
+            return error.message;
+        }
+    }
 }

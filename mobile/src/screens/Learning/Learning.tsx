@@ -41,8 +41,8 @@ export function Learning() {
     getUserTopics()
   }, [trigger])
 
-    useEffect(() => {
-      generateTip();
+  useEffect(() => {
+    generateTip();
   }, [selectedTopicId])
 
 
@@ -82,7 +82,17 @@ export function Learning() {
           value: topic.id
         }))
 
-        setTopicsOptions(options)
+        const noChoice = {
+          label: "Escolha um assunto",
+          value: 0
+        }
+
+        const optionsWithNoChoice: Option[] = [
+          noChoice,
+          ...options
+        ]
+
+        setTopicsOptions(optionsWithNoChoice)
         setSelectedTopicId(Number(options[0].value))
       }
     } catch (error) {
@@ -118,6 +128,7 @@ export function Learning() {
     const tip = selectedTopicId && await getTip(selectedTopicId)
     console.log('tip')
     console.log(tip)
+
     tip && setTip(tip);
   }
 
@@ -136,7 +147,7 @@ export function Learning() {
             <View style={styles.row}>
               <FloatingCard
                 style={{ width: halfWidth }}
-                onPress={() => Alert.alert('Vamos lá!')}
+                onPress={() => navigation.navigate("Activity")}
               >
                 <Text style={styles.title}>📚 Atividades</Text>
                 <Text style={styles.content}>{completedActivities}/{totalActivities} concluídas</Text>
@@ -201,7 +212,7 @@ export function Learning() {
 
               <AnimatedButton
                 title="Começar Aprendizado"
-                onPress={() => addTopicToUser()}
+                onPress={() => setIsChooseTopicOn(false)}
               />
             </FloatingCard>
           </View>
@@ -229,7 +240,7 @@ export function Learning() {
 
               <AnimatedButton
                 title="Voltar"
-                onPress={() => setIsChooseTopicOn(false)}
+                onPress={() => changeTopic()}
               />
             </FloatingCard>
           </View>
