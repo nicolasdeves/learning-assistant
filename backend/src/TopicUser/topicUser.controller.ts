@@ -13,11 +13,13 @@ export class TopicUserController {
     ) {
         try {
             const topicUserAlreadyExists = await this.topicUserService.getByConditions(body)
-            const topicUser = !topicUserAlreadyExists && await this.topicUserService.create(body)
 
-            return {
-                topicUser
+            if (topicUserAlreadyExists.length == 0) {
+                const topicUser = await this.topicUserService.create(body)
+
+                return { topicUser }
             }
+
         } catch (error: any) {
             return { error, message: "Error creating topic user"}
         }
