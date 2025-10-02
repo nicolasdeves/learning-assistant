@@ -4,4 +4,5 @@ export type RootStackParamList = {
     ChooseTopic: undefined;
     Learning: undefined;
     Community: undefined;
+    Activity: undefined;
 }

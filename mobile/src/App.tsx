@@ -6,6 +6,7 @@ import { RootStackParamList } from "./interfaces/navbar";
 import { ChooseTopic } from "./screens/ChooseTopic/ChooseTopic";
 import { Learning } from "./screens/Learning/Learning";
 import { Community } from "./screens/Community/Community";
+import { Activity } from "./screens/Activity/Activity";
 
 function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -18,6 +19,7 @@ function App() {
         <Stack.Screen name="ChooseTopic" component={ChooseTopic} />
         <Stack.Screen name="Learning" component={Learning} />
         <Stack.Screen name="Community" component={Community} />
+        <Stack.Screen name="Activity" component={Activity} />
       </Stack.Navigator>
     </NavigationContainer>
   );
