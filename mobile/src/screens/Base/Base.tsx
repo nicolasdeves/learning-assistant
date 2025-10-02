@@ -5,6 +5,8 @@ import { Navbar } from '../../components/Navbar/Navbar';
 import { Header } from '../../components/Header/Header';
 import { Drawer } from '../../components/Drawner/Drawner';
 import { styles } from '../../styles/global';
+import { signOutUser } from '../../auth/authentication';
+import { makeNavigation } from '../../service/navigation.service';
 
 
 type BaseProps = {
@@ -13,10 +15,15 @@ type BaseProps = {
 
 export const Base = ({ children }: BaseProps) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  const navigation = makeNavigation();
+  
   return (
     <SafeAreaView style={styles.container}>
-      <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <Drawer 
+        isOpen={drawerOpen} 
+        onClose={() => setDrawerOpen(false)}
+        onLogoff={() => {setDrawerOpen(false); signOutUser(navigation)}}
+        />
 
       <Header
         onHamburgerPress={() => setDrawerOpen(true)}

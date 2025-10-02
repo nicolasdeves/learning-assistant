@@ -4,7 +4,7 @@ import { makeNavigation } from "../../service/navigation.service";
 
 const { width } = Dimensions.get("window");
 
-export function Drawer({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+export function Drawer({ isOpen, onClose, onLogoff }: { isOpen: boolean, onClose: () => void, onLogoff: () => void }) {
   const animation = useRef(new Animated.Value(isOpen ? 1 : 0)).current;
   const navigation = makeNavigation();
 
@@ -49,6 +49,10 @@ export function Drawer({ isOpen, onClose }: { isOpen: boolean, onClose: () => vo
 
       <TouchableOpacity onPress={() => { navigation.navigate("Home"); onClose(); } } style={{ marginBottom: 15 }}>
         <Text>Home</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => { navigation.navigate("Login"); onLogoff(); } } style={{ marginBottom: 15 }}>
+        <Text>Sair</Text>
       </TouchableOpacity>
     </Animated.View>
   );
