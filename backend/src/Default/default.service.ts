@@ -5,6 +5,7 @@ export class DefaultService<
   Delegate extends { 
     findMany: (...args: any) => any;
     findUnique: (...args: any) => any;
+    findFirst: (...args: any) => any;
     create: (...args: any) => any;
     update: (...args: any) => any;
     delete: (...args: any) => any;
@@ -17,8 +18,8 @@ export class DefaultService<
     return this.delegate.findMany();
   }
 
-  async getOne(id: Number): Promise<Model | null> {
-    return this.delegate.findUnique({ where: { id } });
+  async getOne(where: Where): Promise<Model | null> {
+    return this.delegate.findFirst({ where });
   }
 
   async create(data: Create): Promise<Model> {

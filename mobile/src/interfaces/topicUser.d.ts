@@ -1,4 +1,5 @@
 interface TopicUserRequest {
     googleUserId: string,
-    topicId: number
+    topicId: number,
+    level: string
 }

@@ -15,29 +15,26 @@ model Topic {
 
   activities  Activity[]
   topicUser   TopicUser[]
-  levels      Level[]
   communities Community[]
   notifications Notification[]
 
   @@map("topic")
 }
 
+enum LevelEnum {
+  beginner
+  intermediate
+  advanced
+}
 model TopicUser {
   id           Int    @id @default(autoincrement())
   googleUserId String @map("google_user_id")
   topicId      Int    @map("topic_id")
+  level        LevelEnum
 
   topic Topic @relation(fields: [topicId], references: [id])
 
   @@map("topic_user")
-}
-
-model Level {
-  id      Int    @id @default(autoincrement())
-  name    String
-  topicId Int    @map("topic_id")
-
-  topic Topic @relation(fields: [topicId], references: [id])
 }
 
 model Activity {

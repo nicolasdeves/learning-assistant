@@ -43,7 +43,7 @@ export class AiController {
             // Para nao ficar consumindo créditos...
             // return 'Para melhorar sua pronúncia, tente imitar falantes nativos. Ouça podcasts, filmes ou músicas e repita as frases em voz alta. Isso ajuda a pegar a entonação e o ritmo do idioma!';
 
-            const topic = await this.topicService.getOne(topicId);
+            const topic = await this.topicService.getOne({ id: topicId });
 
             const message = topic && "Gere uma atividade de " + topic.name + "de nível " + level;
             const response = message && await this.aiService.generateContent(message);

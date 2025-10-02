@@ -12,15 +12,23 @@ export class TopicUserController {
         @Body() body: Prisma.TopicUserUncheckedCreateInput
     ) {
         try {
-            const topicUserAlreadyExists = await this.topicUserService.getByConditions(body)
+            const topicUserAlreadyExists = await this.topicUserService.getOne({
+                googleUserId: body.googleUserId,
+                topicId: body.topicId
+            });
 
-            if (topicUserAlreadyExists.length == 0) {
+            if (!topicUserAlreadyExists) {
                 const topicUser = await this.topicUserService.create(body)
 
                 return { topicUser }
+            } else {
+                topicUserAlreadyExists && this.topicUserService.update(topicUserAlreadyExists.id, {
+                    level: body.level
+                });
             }
 
         } catch (error: any) {
+            console.log(error)
             return { error, message: "Error creating topic user"}
         }
 
