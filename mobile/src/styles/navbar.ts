@@ -4,10 +4,11 @@ export const navbarStyles = StyleSheet.create({
     navbar: {
         position: "absolute",
         bottom: 20,
-        backgroundColor: "#E7C8C8",
-        width: "90%",
-        height: "5%",
-        borderRadius: 50,
+        backgroundColor: "#F2F2F2",
+        width: "100%",
+        height: "10%",
+        borderTopColor: "#A8A8A8",
+        borderTopWidth: 1,
 
         display: "flex",
         alignSelf: "center",
@@ -25,9 +26,9 @@ export const navbarStyles = StyleSheet.create({
 
       navbarImageSelected: {
         opacity: 1,
-        width: 40,
-        height: 40,
-        marginBottom: 20
+        width: 37,
+        height: 37,
+        tintColor: "#54A8E8"
       }
 
 })

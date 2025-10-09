@@ -18,6 +18,10 @@ export function Navbar() {
 
     return (
         <SafeAreaView style={navbarStyles.navbar}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Image source={assets.home} style={getIconStyle("Home")} />
+            </TouchableOpacity>
+
             <TouchableOpacity onPress={() => navigation.navigate("Learning")}>
                 <Image source={assets.brain} style={getIconStyle("Learning")} />
             </TouchableOpacity>

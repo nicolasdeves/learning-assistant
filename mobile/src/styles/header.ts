@@ -4,26 +4,23 @@ export const headerStyles = StyleSheet.create({
     header: {
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-around",
-        margin: 10
+        justifyContent: "space-between",
+        marginLeft: 30,
+        marginRight: 30
     },
 
-    headerImage: {
-        width: 35,
-        height: 35,
+    headerUserImage: {
+        width: 60,
+        height: 60,
+        borderRadius: 25,
+        borderWidth: 2,
+        borderColor: "#CFF5FF",
     },
 
-    // offensive: {
-    //     display: "flex",
-    //     flexDirection: "row",
-    //     fontSize: 25,
-    //     margin: 2
-    // },
-
-    mainIcon: {
-        height: 70,
-        width: 70,
-
+    headerCalendarIcon: {
+        width: 60,
+        height: 60,
+        transform: [{ scaleX: -1 }],
     }
 })
 

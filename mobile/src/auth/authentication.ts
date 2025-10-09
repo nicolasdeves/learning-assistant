@@ -45,3 +45,19 @@ export async function signOutUser(navigation: NativeStackNavigationProp<RootStac
   }
 }
 
+export async function getUserPhoto() {
+  try {
+    return auth.currentUser?.photoURL;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getUserName() {
+  try {
+    return auth.currentUser?.displayName
+  } catch (error) {
+    console.log(error)
+  }
+}
+
