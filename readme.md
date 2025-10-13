@@ -8,7 +8,11 @@
 
 - npx prisma generate
 
+- npx prisma migrate dev
+
 - npx prisma migrate dev --name `migration_name`
+
+- npx prisma db seed
 
 ### Mobile
 

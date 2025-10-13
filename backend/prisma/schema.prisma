@@ -13,36 +13,45 @@ model Topic {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  activities  Activity[]
-  topicUser   TopicUser[]
-  communities Community[]
+  activities    Activity[]
+  topicUser     TopicUser[]
+  communities   Community[]
   notifications Notification[]
+  levels        Level[]
+  Daily         Daily[]
 
   @@map("topic")
 }
 
-enum LevelEnum {
-  beginner
-  intermediate
-  advanced
-}
 model TopicUser {
   id           Int    @id @default(autoincrement())
   googleUserId String @map("google_user_id")
   topicId      Int    @map("topic_id")
-  level        LevelEnum
+  levelId      Int
 
   topic Topic @relation(fields: [topicId], references: [id])
+  level Level @relation(fields: [levelId], references: [id])
 
   @@map("topic_user")
 }
 
-model Activity {
-  id      Int      @id @default(autoincrement())
+model Level {
+  id      Int    @id @default(autoincrement())
   name    String
-  date    DateTime
-  googleUserId  Int      @map("google_user_id")
-  topicId Int      @map("topic_id")
+  topicId Int    @map("topic_id")
+
+  topic Topic @relation(fields: [topicId], references: [id])
+
+  topicsUsers TopicUser[]
+  Daily       Daily[]
+}
+
+model Activity {
+  id           Int      @id @default(autoincrement())
+  name         String
+  date         DateTime
+  googleUserId Int      @map("google_user_id")
+  topicId      Int      @map("topic_id")
 
   conclusion String? // user conclusion (IA)
   positive   String? //positive points (IA)
@@ -143,9 +152,21 @@ model Notification {
   id           Int      @id @default(autoincrement())
   content      String
   googleUserId String   @map("google_user_id")
-  topicId Int
+  topicId      Int
   date         DateTime
   createdAt    DateTime @default(now()) @map("created_at")
 
   topic Topic @relation(fields: [topicId], references: [id])
+}
+
+model Daily {
+  id      Int    @id @default(autoincrement())
+  topicId Int
+  levelId Int
+  content String
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  topic Topic @relation(fields: [topicId], references: [id])
+  level Level @relation(fields: [levelId], references: [id])
 }

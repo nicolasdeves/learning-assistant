@@ -10,16 +10,17 @@ export class DefaultService<
     update: (...args: any) => any;
     delete: (...args: any) => any;
   },
-  Where
+  Where,
+  Include = unknown
 > {
   constructor(protected delegate: Delegate) {}
 
-  async getAll(): Promise<Model[]> {
-    return this.delegate.findMany();
+  async getAll(include?: Include): Promise<Model[]> {
+    return this.delegate.findMany({ include });
   }
 
-  async getOne(where: Where): Promise<Model | null> {
-    return this.delegate.findFirst({ where });
+  async getOne(where: Where, include?: Include): Promise<Model | null> {
+    return this.delegate.findFirst({ where, include });
   }
 
   async create(data: Create): Promise<Model> {
@@ -34,7 +35,7 @@ export class DefaultService<
     return this.delegate.delete({ where: { id } });
   }
 
-  async getByConditions(where: Where): Promise<Model[]> {
-    return this.delegate.findMany({ where })
+  async getByConditions(where: Where, include?: Include): Promise<Model[]> {
+    return this.delegate.findMany({ where, include });
   }
- }
+}

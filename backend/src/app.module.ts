@@ -5,6 +5,7 @@ import { DefaultModule } from './Default/default.module';
 import { TopicModule } from './Topic/topic.module';
 import { ActivityModule } from './Activity/activity.module';
 import { TopicUserModule } from './TopicUser/topicUser.module';
+import { DailyModule } from './Daily/daily.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -14,7 +15,8 @@ import { TopicUserModule } from './TopicUser/topicUser.module';
   DefaultModule,
   TopicModule,
   ActivityModule,
-  TopicUserModule
+  TopicUserModule,
+  DailyModule
   ],
   controllers: [],
   providers: [],

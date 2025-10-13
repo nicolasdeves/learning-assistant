@@ -8,7 +8,8 @@ export class TopicService extends DefaultService<
   Prisma.TopicCreateInput,
   Prisma.TopicUpdateInput,
   PrismaClient['topic'],
-  Prisma.TopicWhereInput
+  Prisma.TopicWhereInput,
+  Prisma.TopicInclude
 > {
   constructor(private prisma: PrismaClient) {
     super(prisma.topic);
