@@ -1,12 +1,12 @@
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { styles } from "./styles";
 import { assets } from "../../assets/assets";
-import { TopicResponse } from "../../interfaces/topics";
+import { TopicResponse } from "../../interfaces/topic";
 import { linkUserToTopic } from "../../service/topicUser.service";
 
 interface AvailableTopicsProps {
     topics: TopicResponse[]
-    onSelectTopic: (topicId: number) => void
+    onSelectTopic: (topic: TopicResponse) => void
 }
 
 export function AvailableTopics({ topics, onSelectTopic }: AvailableTopicsProps) {
@@ -21,7 +21,7 @@ export function AvailableTopics({ topics, onSelectTopic }: AvailableTopicsProps)
                 contentContainerStyle={{ paddingVertical: 10 }}
             >
                 {topics.map((topic) => (
-                    <Pressable key={topic.id} style={styles.activityItem} onPress={() => onSelectTopic(topic.id)}>
+                    <Pressable key={topic.id} style={styles.activityItem} onPress={() => onSelectTopic(topic)}>
                         <Image source={assets.book} style={styles.activityImage} />
                         <Text style={styles.activityDescription}>{topic.name}</Text>
                     </Pressable>

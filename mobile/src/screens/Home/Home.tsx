@@ -6,12 +6,14 @@ import { Tip } from "./Tip";
 import { Tools } from "./Tools";
 import { getLoggedUser } from "../../auth/authentication";
 import { getTopics } from "../../service/topic.service";
-import { TopicResponse } from "../../interfaces/topics";
+import { TopicResponse } from "../../interfaces/topic";
 import { styles } from "./styles";
 import { makeNavigation } from "../../service/navigation.service";
+import { verifyUserIsAlreadyRegistered } from "../../service/topicUser.service";
 
 export function Home() {
   const [userName, setUserName] = useState<string>("");
+  const [googleUserId, setGoogleUserId] = useState<string>("");
   const [topics, setTopics] = useState<TopicResponse[] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -25,12 +27,21 @@ export function Home() {
   const fetchUser = async () => {
     const user = await getLoggedUser();
     if (user?.displayName) setUserName(user.displayName);
+    if (user?.uid) setGoogleUserId(user.uid)
   };
 
   const fetchTopics = async () => {
     const topics = await getTopics();
     setTopics(topics);
   };
+
+  const redirect = async (topic: TopicResponse) => {
+    const userAlreadyHasTopic = await verifyUserIsAlreadyRegistered(googleUserId, topic.id)
+    console.log('userAlreadyHasTopic')
+    console.log(userAlreadyHasTopic)
+
+    userAlreadyHasTopic ? navigation.navigate("Learning") : navigation.navigate("RegisterTopic", {topic})
+  }
 
   return (
     <Base>
@@ -40,7 +51,7 @@ export function Home() {
       {topics && (
         <AvailableTopics
           topics={topics}
-          onSelectTopic={(topicId) => navigation.navigate("RegisterTopic", {topicId})}
+          onSelectTopic={(topic) => redirect(topic)}
         />
       )}
 
