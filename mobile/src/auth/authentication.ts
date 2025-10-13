@@ -32,8 +32,11 @@ export async function loginWithGoogle(navigation: NativeStackNavigationProp<Root
 }
   
 export async function getLoggedUser() {
-  console.log(auth)
   return auth.currentUser;
+}
+
+export async function getLoggedUserId() {
+  return auth.currentUser?.uid;
 }
 
 export async function signOutUser(navigation: NativeStackNavigationProp<RootStackParamList>) {

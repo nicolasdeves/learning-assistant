@@ -4,8 +4,6 @@ export const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 20,
     color: '#333333',
-    // textAlign: "center",
-    // marginVertical: 20,
     marginLeft: 30,
     fontFamily: 'sans-serif-light',
   },

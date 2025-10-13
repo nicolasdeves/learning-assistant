@@ -1,4 +1,4 @@
-import { TopicResponse } from "../interfaces/topics";
+import { TopicResponse } from "../interfaces/topic";
 import { api } from "./axios.service";
 
 export async function getTopicsByUser(googleUserId: string): Promise<TopicResponse[] | null> {
