@@ -1,44 +1,52 @@
 import { useEffect, useState } from "react";
+import { Text } from "react-native";
 import { Base } from "../Base/Base";
-import { Image, ScrollView, Text, View } from "react-native";
-import { getUserName } from "../../auth/authentication";
-import { styles } from "./styles";
-import { InfoCard } from "../../components/InfoCard/InfoCard";
-import { assets } from "../../assets/assets";
 import { AvailableTopics } from "./AvailableTopics";
 import { Tip } from "./Tip";
 import { Tools } from "./Tools";
+import { getLoggedUser } from "../../auth/authentication";
+import { getTopics } from "../../service/topic.service";
+import { TopicResponse } from "../../interfaces/topics";
+import { styles } from "./styles";
+import { makeNavigation } from "../../service/navigation.service";
 
 export function Home() {
-
   const [userName, setUserName] = useState<string>("");
+  const [topics, setTopics] = useState<TopicResponse[] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const navigation = makeNavigation();
 
   useEffect(() => {
-    fetchUserName();
-  }, [])
+    fetchUser();
+    fetchTopics();
+  }, []);
 
-  const fetchUserName = async () => {
-    const name = await getUserName();
-    name && setUserName(name);
-  }
+  const fetchUser = async () => {
+    const user = await getLoggedUser();
+    if (user?.displayName) setUserName(user.displayName);
+  };
 
-  const activities = [
-    { id: 1, image: "https://via.placeholder.com/100", description: "Inglês" },
-    { id: 2, image: "https://via.placeholder.com/100", description: "Espanhol" },
-    { id: 3, image: "https://via.placeholder.com/100", description: "História" },
-    { id: 4, image: "https://via.placeholder.com/100", description: "Matemática" },
-    { id: 5, image: "https://via.placeholder.com/100", description: "Leitura" },
-  ];
+  const fetchTopics = async () => {
+    const topics = await getTopics();
+    setTopics(topics);
+  };
+
   return (
     <Base>
-      <Text style={styles.welcomeText}> BEM-VINDO, {userName} !</Text>
+      <Text style={styles.welcomeText}>BEM-VINDO, {userName}</Text>
 
-      <AvailableTopics activities={activities}/>
 
-      <Tip/>
+      {topics && (
+        <AvailableTopics
+          topics={topics}
+          onSelectTopic={(topicId) => navigation.navigate("RegisterTopic", {topicId})}
+        />
+      )}
 
-      <Tools/>
+      <Tip />
 
+      <Tools />
     </Base>
   );
 }

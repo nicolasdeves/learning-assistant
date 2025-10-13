@@ -5,4 +5,5 @@ export type RootStackParamList = {
     Learning: undefined;
     Community: undefined;
     Activity: undefined;
+    RegisterTopic: { topicId: number };
 }

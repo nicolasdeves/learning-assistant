@@ -53,11 +53,3 @@ export async function getUserPhoto() {
   }
 }
 
-export async function getUserName() {
-  try {
-    return auth.currentUser?.displayName
-  } catch (error) {
-    console.log(error)
-  }
-}
-
