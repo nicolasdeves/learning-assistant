@@ -1,3 +1,5 @@
+import { TopicResponse } from "./topic";
+
 export type RootStackParamList = {
     Home: undefined;
     Login: undefined;
@@ -5,5 +7,5 @@ export type RootStackParamList = {
     Learning: undefined;
     Community: undefined;
     Activity: undefined;
-    RegisterTopic: { topicId: number };
+    RegisterTopic: { topic: TopicResponse };
 }
