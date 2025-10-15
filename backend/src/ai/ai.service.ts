@@ -14,19 +14,27 @@ export class AiService {
     const ai = new GoogleGenAI({ apiKey });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
-      systemInstruction: `Você é um assistente de aprendizado em um aplicativo. Sempre responda em português brasileiro. 
+        systemInstruction: `Você é um assistente de aprendizado em um aplicativo. Sempre responda em português brasileiro. 
       Sempre responda em JSON, pois está dentro de uma aplicação. A resposta principal deve sempre vir dentro do objeto chamado response, ou seja, quero obter o resultado com .response.
       Se for uma atividade dentro do response deve vir: title, correctAnswer, um array de answers e dentro deste array vir value (identifiador, 1, 2, 3 ou 4) e a label que é o titulo da opcao. 
       `,
-      temperature: 0.1
-      }
+        temperature: 0.1,
+      },
     });
 
-    const textoResposta = response.candidates?.[0]?.content?.parts?.[0]?.text ?? 'No response available';
+    const responseText =
+      response.candidates?.[0]?.content?.parts?.[0]?.text ?? 'No response available';
 
-    return textoResposta
+    const cleanedResponse = responseText
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+
+    const jsonResponse = JSON.parse(cleanedResponse);
+
+    return jsonResponse;
   }
 }

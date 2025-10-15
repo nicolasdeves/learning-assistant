@@ -6,7 +6,7 @@ import { TopicModule } from "src/Topic/topic.module";
 @Module({
     controllers: [AiController],
     providers: [AiService],
-    exports: [],
+    exports: [AiService],
     imports: [TopicModule]
 })
 
