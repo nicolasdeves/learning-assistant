@@ -8,7 +8,8 @@ export class TopicUserService extends DefaultService<
   Prisma.TopicUserUncheckedCreateInput,
   Prisma.TopicUserUpdateInput,
   PrismaClient['topicUser'],
-  Prisma.TopicUserWhereInput
+  Prisma.TopicUserWhereInput,
+  Prisma.TopicUserInclude
 > {
   constructor(private prisma: PrismaClient) {
     super(prisma.topicUser);

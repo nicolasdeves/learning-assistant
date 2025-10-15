@@ -22,4 +22,14 @@ export class TopicController {
       },
     });
   }
+
+  @Get('/topics/activitiesInformations/:googleUserId')
+  async getUserTopicsActivitiesInformations(
+    @Param('googleUserId') googleUserId: string,
+  ) {
+    // tarefas diarias realizadas
+    //tarefas diarias objetivo
+    //atividades realizadas total
+    //ultima atividade realizada (data)
+  }
 }

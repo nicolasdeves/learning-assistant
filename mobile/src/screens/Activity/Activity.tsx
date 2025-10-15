@@ -1,122 +1,192 @@
-import React, { useRef, useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Animated, StyleSheet, Easing } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Base } from "../Base/Base";
-import { AnimatedButton } from "../../components/AnimatedButton/AnimatedButton";
+import { styles } from "./styles";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from "../../interfaces/navbar";
+import { Button } from "../../components/Button/Button";
+import { Loading } from "../../components/Loading/Loading";
+
+type ActivityRouteProp = RouteProp<RootStackParamList, "Activity">;
+
+interface Exercise {
+  id: string;
+  title: string;
+  options: string[];
+  correctAnswer: string;
+  explanation: string;
+}
+
+interface ActivityData {
+  name: string;
+  exercises: Exercise[];
+}
 
 export function Activity() {
-  const [selected, setSelected] = useState<number | null>(null);
-  const [step, setStep] = useState(1);
-  const [questionAnswered, setQuestionAnswered] = useState(false);
+  const route = useRoute<ActivityRouteProp>();
+  const { topicUser } = route.params;
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const question = {
-    text: "What does 'apple' mean in Portuguese?",
-    options: ["Maçã", "Pera", "Banana", "Laranja"],
-    answerIndex: 0,
-  };
+  const [activity, setActivity] = useState<ActivityData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [exerciseIndex, setExerciseIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [answered, setAnswered] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 800,
-      easing: Easing.out(Easing.ease),
-      useNativeDriver: true,
-    }).start();
-  }, [step]);
+    fetchActivity();
+  }, []);
 
-  const handleSelect = (index: number) => {
-    setSelected(index);
+  const fetchActivity = async () => {
+    setLoading(true);
+    await new Promise((res: any) => setTimeout(res, 1500)); // simula chamada da API
+
+    const mockActivity: ActivityData = {
+      name: topicUser.topic?.name || "Lógica de Programação",
+      exercises: [
+        {
+          id: "1",
+          title: "Qual símbolo usamos pra declarar uma função em JavaScript?",
+          options: ["function", "fun", "def", "proc"],
+          correctAnswer: "function",
+          explanation: "Usamos 'function' pra declarar funções em JavaScript.",
+        },
+        {
+          id: "2",
+          title: "Qual operador é usado pra comparar igualdade estrita?",
+          options: ["==", "===", "=", "!="],
+          correctAnswer: "===",
+          explanation:
+            "'===' compara valor e tipo, sem conversões automáticas.",
+        },
+        {
+          id: "3",
+          title: "Qual método exibe uma mensagem no console?",
+          options: ["alert()", "log()", "console.log()", "printf()"],
+          correctAnswer: "console.log()",
+          explanation:
+            "O método 'console.log()' exibe mensagens no console do navegador.",
+        },
+        {
+          id: "4",
+          title: "Como declaramos uma variável constante?",
+          options: ["var", "let", "const", "def"],
+          correctAnswer: "const",
+          explanation:
+            "Usamos 'const' pra declarar variáveis cujo valor não muda.",
+        },
+        {
+          id: "5",
+          title: "Qual desses é um tipo de dado em JavaScript?",
+          options: ["integer", "float", "string", "decimal"],
+          correctAnswer: "string",
+          explanation:
+            "JavaScript usa o tipo 'string' pra representar textos.",
+        },
+      ],
+    };
+
+    setActivity(mockActivity);
+    setLoading(false);
   };
 
-  const handleSubmit = () => {
-    setQuestionAnswered(true);
-    setTimeout(() => {
-      setStep(step + 1);
-      setSelected(null);
-      setQuestionAnswered(false);
-      fadeAnim.setValue(0);
-    }, 1000);
+  const currentExercise = activity?.exercises[exerciseIndex];
+
+  const handleAnswer = () => {
+    if (!currentExercise || !selectedOption) return;
+    const correct = selectedOption === currentExercise.correctAnswer;
+    setIsCorrect(correct);
+    setAnswered(true);
   };
+
+  const handleNext = () => {
+    setAnswered(false);
+    setSelectedOption(null);
+    setIsCorrect(null);
+
+    if (exerciseIndex < (activity?.exercises.length || 0) - 1) {
+      setExerciseIndex(exerciseIndex + 1);
+    } else {
+      console.log("Atividade concluída!");
+    }
+  };
+
+  if (loading) return <Loading message="Buscando atividade..." />;
 
   return (
     <Base>
-      <Animated.View style={{ ...styles.container, opacity: fadeAnim }}>
-        <Text style={styles.counter}>Activity {step}/3</Text>
-        <Text style={styles.question}>{question.text}</Text>
+      <View style={styles.container}>
+        {/* Contador */}
+        <Text style={styles.counter}>
+          Exercício {exerciseIndex + 1}/{activity?.exercises.length}
+        </Text>
 
-        <View style={styles.optionsContainer}>
-          {question.options.map((option, i) => (
-            <TouchableOpacity
-              key={i}
-              style={[
-                styles.option,
-                selected === i && styles.selectedOption,
-                questionAnswered && i === question.answerIndex && styles.correctOption,
-                questionAnswered && selected === i && selected !== question.answerIndex && styles.wrongOption,
-              ]}
-              onPress={() => handleSelect(i)}
-              disabled={questionAnswered}
-            >
-              <Text style={styles.optionText}>{option}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {/* Título da atividade */}
+        <Text style={styles.title}>{activity?.name.toUpperCase()}</Text>
 
-        <AnimatedButton
-          title="Submit"
-          onPress={handleSubmit}
-          style={[styles.submitButton, !selected && styles.disabledButton]}
-        />
-      </Animated.View>
+        {/* Enunciado */}
+        <Text style={styles.exercise}>{currentExercise?.title}</Text>
+
+        {/* Alternativas */}
+        {currentExercise?.options.map((option, idx) => (
+          <TouchableOpacity
+            key={idx}
+            style={[
+              styles.option,
+              selectedOption === option && styles.optionSelected,
+              answered &&
+                option === currentExercise.correctAnswer &&
+                styles.optionCorrect,
+              answered &&
+                selectedOption === option &&
+                option !== currentExercise.correctAnswer &&
+                styles.optionWrong,
+            ]}
+            onPress={() => !answered && setSelectedOption(option)}
+            disabled={answered}
+          >
+            <Text style={styles.optionText}>{option}</Text>
+          </TouchableOpacity>
+        ))}
+
+        {/* Botão de responder */}
+        {!answered && (
+          <Button
+            label="Responder"
+            onPress={handleAnswer}
+            disabled={!selectedOption}
+          />
+        )}
+
+        {/* Feedback */}
+        {answered && (
+          <View
+            style={[
+              styles.feedbackContainer,
+              isCorrect ? styles.feedbackCorrect : styles.feedbackWrong,
+            ]}
+          >
+            <Text style={styles.feedbackText}>
+              {isCorrect ? "✅ Resposta correta!" : "❌ Resposta incorreta!"}
+            </Text>
+            <Text style={styles.explanation}>
+              {currentExercise?.explanation}
+            </Text>
+          </View>
+        )}
+
+        {/* Próxima atividade */}
+        {answered && (
+          <Button
+            label={
+              exerciseIndex === (activity?.exercises.length || 0) - 1
+                ? "Finalizar"
+                : "Próximo exercício"
+            }
+            onPress={handleNext}
+          />
+        )}
+      </View>
     </Base>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    flex: 1,
-    justifyContent: "center",
-  },
-  counter: {
-    fontSize: 16,
-    color: "#aaa",
-    marginBottom: 10,
-  },
-  question: {
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 30,
-    color: "#333",
-  },
-  optionsContainer: {
-    marginBottom: 40,
-  },
-  option: {
-    backgroundColor: "#eee",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-  },
-  selectedOption: {
-    borderWidth: 2,
-    borderColor: "#6c63ff",
-  },
-  correctOption: {
-    backgroundColor: "#4caf50",
-  },
-  wrongOption: {
-    backgroundColor: "#f44336",
-  },
-  optionText: {
-    fontSize: 18,
-    color: "#333",
-  },
-  submitButton: {
-    marginTop: 20,
-  },
-  disabledButton: {
-    opacity: 0.5,
-  },
-});
