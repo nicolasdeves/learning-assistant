@@ -28,6 +28,7 @@ model TopicUser {
   googleUserId String @map("google_user_id")
   topicId      Int    @map("topic_id")
   levelId      Int
+  weeklyGoal   Int
 
   topic Topic @relation(fields: [topicId], references: [id])
   level Level @relation(fields: [levelId], references: [id])
@@ -50,7 +51,7 @@ model Activity {
   id           Int      @id @default(autoincrement())
   name         String
   date         DateTime
-  googleUserId String      @map("google_user_id")
+  googleUserId String   @map("google_user_id")
   topicId      Int      @map("topic_id")
 
   createdAt DateTime @default(now()) @map("created_at")

@@ -63,8 +63,6 @@ export class TopicUserController {
       topic: true
     });
 
-    console.log(topicsUser)
-
     const log = new Logger()
 
     log.warn(topicsUser)

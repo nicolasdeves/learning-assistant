@@ -4,7 +4,8 @@ import { TopicResponse } from "./topic"
 export interface TopicUserRequest {
     googleUserId: string,
     topicId: number,
-    levelId: number
+    levelId: number,
+    weeklyGoal: number
 }
 
 export interface TopicUserUncheckedLevelRequest {
@@ -16,7 +17,8 @@ export interface TopicUserResponse {
     id: number,
     googleUserId: string,
     topicId: number,
-    levelId: number
+    levelId: number,
+    weeklyGoal: number,
     topic?: TopicResponse
     level?: LevelResponse
 }

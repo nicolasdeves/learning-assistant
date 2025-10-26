@@ -1,12 +1,13 @@
 import { TopicUserRequest, TopicUserUncheckedLevelRequest } from '../interfaces/topicUser';
 import { api } from './axios.service';
 
-export async function linkUserToTopic(googleUserId: string, topicId: number, levelId: number) {
+export async function linkUserToTopic(googleUserId: string, topicId: number, levelId: number, weeklyGoal: number) {
   try {
     const body: TopicUserRequest = {
       googleUserId,
       topicId,
-      levelId
+      levelId,
+      weeklyGoal
     };
     const response = await api.post(`topicUsers`, body);
 
