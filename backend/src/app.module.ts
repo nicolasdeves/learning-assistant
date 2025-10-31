@@ -6,6 +6,9 @@ import { TopicModule } from './Topic/topic.module';
 import { ActivityModule } from './Activity/activity.module';
 import { TopicUserModule } from './TopicUser/topicUser.module';
 import { DailyModule } from './Daily/daily.module';
+import { ExerciseModule } from './Exercise/exercise.module';
+import { ExerciseTypeModule } from './ExerciseType/exercise.module';
+import { AlternativeModule } from './Alternative/alternative.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -16,7 +19,10 @@ import { DailyModule } from './Daily/daily.module';
   TopicModule,
   ActivityModule,
   TopicUserModule,
-  DailyModule
+  DailyModule,
+  AlternativeModule,
+  ExerciseModule,
+  ExerciseTypeModule
   ],
   controllers: [],
   providers: [],
