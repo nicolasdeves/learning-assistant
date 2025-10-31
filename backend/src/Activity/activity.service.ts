@@ -5,7 +5,7 @@ import { DefaultService } from 'src/Default/default.service';
 @Injectable()
 export class ActivityService extends DefaultService<
   Activity,
-  Prisma.ActivityCreateInput,
+  Prisma.ActivityUncheckedCreateInput,
   Prisma.ActivityUpdateInput,
   PrismaClient['activity'],
   Prisma.ActivityWhereInput

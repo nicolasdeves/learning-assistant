@@ -9,6 +9,7 @@ import { DailyModule } from './Daily/daily.module';
 import { ExerciseModule } from './Exercise/exercise.module';
 import { ExerciseTypeModule } from './ExerciseType/exercise.module';
 import { AlternativeModule } from './Alternative/alternative.module';
+import { LevelModule } from './Level/level.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -22,7 +23,8 @@ import { AlternativeModule } from './Alternative/alternative.module';
   DailyModule,
   AlternativeModule,
   ExerciseModule,
-  ExerciseTypeModule
+  ExerciseTypeModule,
+  LevelModule
   ],
   controllers: [],
   providers: [],

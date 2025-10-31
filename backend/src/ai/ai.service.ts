@@ -35,6 +35,6 @@ export class AiService {
 
     const jsonResponse = JSON.parse(cleanedResponse);
 
-    return jsonResponse;
+    return jsonResponse.response;
   }
 }

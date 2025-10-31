@@ -7,13 +7,14 @@ import { ActivityController } from "./activity.controller";
 import { ExerciseModule } from "src/Exercise/exercise.module";
 import { ExerciseTypeModule } from "src/ExerciseType/exercise.module";
 import { AlternativeModule } from "src/Alternative/alternative.module";
+import { LevelModule } from "src/Level/level.module";
 
 
 @Module({
     controllers: [ActivityController],
     providers: [ActivityService, PrismaClient],
     exports: [],
-    imports: [AiModule, TopicModule, ExerciseModule, ExerciseTypeModule, AlternativeModule]
+    imports: [AiModule, TopicModule, ExerciseModule, ExerciseTypeModule, AlternativeModule, LevelModule]
 })
 
 export class ActivityModule {}
