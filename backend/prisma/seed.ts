@@ -21,6 +21,13 @@ async function main() {
     ],
   });
 
+  await prisma.exerciseType.create({
+    data: {
+      id: 1,
+      description: 'Alternativas'
+    }
+  })
+
   console.log('🌱 Seed executado com sucesso!');
 }
 
