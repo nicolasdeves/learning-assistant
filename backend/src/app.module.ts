@@ -10,6 +10,9 @@ import { ExerciseModule } from './Exercise/exercise.module';
 import { ExerciseTypeModule } from './ExerciseType/exercise.module';
 import { AlternativeModule } from './Alternative/alternative.module';
 import { LevelModule } from './Level/level.module';
+import { CommunityModule } from './Community/community.module';
+import { MessageModule } from './Message/message.module';
+import { CommunityUserModule } from './CommunityUser/communityUser.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -24,7 +27,10 @@ import { LevelModule } from './Level/level.module';
   AlternativeModule,
   ExerciseModule,
   ExerciseTypeModule,
-  LevelModule
+  LevelModule,
+  CommunityModule,
+  MessageModule,
+  CommunityUserModule
   ],
   controllers: [],
   providers: [],

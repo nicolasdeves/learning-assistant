@@ -1,3 +1,4 @@
+import { CommunityResponse } from './community';
 import { TopicResponse } from './topic';
 import { TopicUserResponse } from './topicUser';
 
@@ -9,4 +10,5 @@ export type RootStackParamList = {
   Community: undefined;
   Activity: { topicUser: TopicUserResponse };
   RegisterTopic: { topic: TopicResponse };
+  CommunityChat: { community: CommunityResponse }
 };

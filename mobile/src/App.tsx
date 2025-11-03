@@ -8,6 +8,7 @@ import { Learning } from "./screens/Learning/Learning";
 import { Community } from "./screens/Community/Community";
 import { Activity } from "./screens/Activity/Activity";
 import { RegisterTopic } from "./screens/RegisterTopic/RegisterTopic";
+import { CommunityChat } from "./screens/Community/components/CommunityChat";
 
 function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -22,6 +23,7 @@ function App() {
         <Stack.Screen name="Community" component={Community} />
         <Stack.Screen name="Activity" component={Activity} />
         <Stack.Screen name="RegisterTopic" component={RegisterTopic} />
+        <Stack.Screen name="CommunityChat" component={CommunityChat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
