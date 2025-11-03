@@ -1,3 +1,4 @@
+import { ActivityRespose } from "../interfaces/activity";
 import { TopicActivityInformationsResponse, TopicResponse } from "../interfaces/topic";
 import { TopicUserResponse } from "../interfaces/topicUser";
 import { api } from "./axios.service";
@@ -12,8 +13,17 @@ export async function getActivitiesByUser(googleUserId: string): Promise<TopicRe
     }
 }
 
-export async function generateActivity(googleUserId: string, topicUser: TopicUserResponse) {
-    
+export async function getActivityByTopicUser(topicUser: TopicUserResponse): Promise<ActivityRespose | null> {
+    try {
+        const response = await api.get(`/activities/generate/topicUser/${topicUser.id}`);
+
+        console.log('atividadeeeeeeee')
+        console.log(response.data)
+        return response.data;
+    } catch (error: any) {
+        console.log(error)
+        return null
+    }
 }
 
 

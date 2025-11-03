@@ -7,7 +7,7 @@ import { TopicUserController } from "./topicUser.controller";
 @Module({
     controllers: [TopicUserController],
     providers: [TopicUserService, PrismaClient],
-    exports: [],
+    exports: [TopicUserService],
     imports: []
 })
 

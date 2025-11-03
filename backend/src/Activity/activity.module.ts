@@ -8,13 +8,14 @@ import { ExerciseModule } from "src/Exercise/exercise.module";
 import { ExerciseTypeModule } from "src/ExerciseType/exercise.module";
 import { AlternativeModule } from "src/Alternative/alternative.module";
 import { LevelModule } from "src/Level/level.module";
+import { TopicUserModule } from "src/TopicUser/topicUser.module";
 
 
 @Module({
     controllers: [ActivityController],
     providers: [ActivityService, PrismaClient],
     exports: [],
-    imports: [AiModule, TopicModule, ExerciseModule, ExerciseTypeModule, AlternativeModule, LevelModule]
+    imports: [AiModule, TopicModule, ExerciseModule, ExerciseTypeModule, AlternativeModule, LevelModule, TopicUserModule]
 })
 
 export class ActivityModule {}

@@ -7,7 +7,6 @@ import { Select } from "../../components/Select/Select";
 
 export function ChooseTopic() {
 
-
   return (
     <SafeAreaView style={styles.container}>
         <View style={{ padding: 20 }}>

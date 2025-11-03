@@ -6,32 +6,24 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../../interfaces/navbar";
 import { Button } from "../../components/Button/Button";
 import { Loading } from "../../components/Loading/Loading";
+import { makeNavigation } from "../../service/navigation.service";
+import { getActivityByTopicUser } from "../../service/activity.service";
+import { ActivityRespose } from "../../interfaces/activity";
 
 type ActivityRouteProp = RouteProp<RootStackParamList, "Activity">;
-
-interface Exercise {
-  id: string;
-  title: string;
-  options: string[];
-  correctAnswer: string;
-  explanation: string;
-}
-
-interface ActivityData {
-  name: string;
-  exercises: Exercise[];
-}
 
 export function Activity() {
   const route = useRoute<ActivityRouteProp>();
   const { topicUser } = route.params;
 
-  const [activity, setActivity] = useState<ActivityData | null>(null);
+  const [activity, setActivity] = useState<ActivityRespose | null>(null);
   const [loading, setLoading] = useState(true);
   const [exerciseIndex, setExerciseIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedAlternativeId, setSelectedAlternativeId] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+
+  const navigation = makeNavigation();
 
   useEffect(() => {
     fetchActivity();
@@ -39,75 +31,34 @@ export function Activity() {
 
   const fetchActivity = async () => {
     setLoading(true);
-    await new Promise((res: any) => setTimeout(res, 1500)); // simula chamada da API
-
-    const mockActivity: ActivityData = {
-      name: topicUser.topic?.name || "Lógica de Programação",
-      exercises: [
-        {
-          id: "1",
-          title: "Qual símbolo usamos pra declarar uma função em JavaScript?",
-          options: ["function", "fun", "def", "proc"],
-          correctAnswer: "function",
-          explanation: "Usamos 'function' pra declarar funções em JavaScript.",
-        },
-        {
-          id: "2",
-          title: "Qual operador é usado pra comparar igualdade estrita?",
-          options: ["==", "===", "=", "!="],
-          correctAnswer: "===",
-          explanation:
-            "'===' compara valor e tipo, sem conversões automáticas.",
-        },
-        {
-          id: "3",
-          title: "Qual método exibe uma mensagem no console?",
-          options: ["alert()", "log()", "console.log()", "printf()"],
-          correctAnswer: "console.log()",
-          explanation:
-            "O método 'console.log()' exibe mensagens no console do navegador.",
-        },
-        {
-          id: "4",
-          title: "Como declaramos uma variável constante?",
-          options: ["var", "let", "const", "def"],
-          correctAnswer: "const",
-          explanation:
-            "Usamos 'const' pra declarar variáveis cujo valor não muda.",
-        },
-        {
-          id: "5",
-          title: "Qual desses é um tipo de dado em JavaScript?",
-          options: ["integer", "float", "string", "decimal"],
-          correctAnswer: "string",
-          explanation:
-            "JavaScript usa o tipo 'string' pra representar textos.",
-        },
-      ],
-    };
-
-    setActivity(mockActivity);
+    const activity = await getActivityByTopicUser(topicUser);
+    activity && setActivity(activity);
     setLoading(false);
   };
 
   const currentExercise = activity?.exercises[exerciseIndex];
 
   const handleAnswer = () => {
-    if (!currentExercise || !selectedOption) return;
-    const correct = selectedOption === currentExercise.correctAnswer;
+    if (!currentExercise || !selectedAlternativeId) return;
+
+    const correctAlternative = currentExercise.alternatives.find(
+      (a) => a.isCorrect === true
+    );
+
+    const correct = selectedAlternativeId === correctAlternative?.id;
     setIsCorrect(correct);
     setAnswered(true);
   };
 
   const handleNext = () => {
     setAnswered(false);
-    setSelectedOption(null);
+    setSelectedAlternativeId(null);
     setIsCorrect(null);
 
     if (exerciseIndex < (activity?.exercises.length || 0) - 1) {
       setExerciseIndex(exerciseIndex + 1);
     } else {
-      console.log("Atividade concluída!");
+      navigation.navigate("Learning");
     }
   };
 
@@ -116,49 +67,45 @@ export function Activity() {
   return (
     <Base>
       <View style={styles.container}>
-        {/* Contador */}
         <Text style={styles.counter}>
           Exercício {exerciseIndex + 1}/{activity?.exercises.length}
         </Text>
 
-        {/* Título da atividade */}
         <Text style={styles.title}>{activity?.name.toUpperCase()}</Text>
 
-        {/* Enunciado */}
-        <Text style={styles.exercise}>{currentExercise?.title}</Text>
+        <Text style={styles.exercise}>{currentExercise?.name}</Text>
 
-        {/* Alternativas */}
-        {currentExercise?.options.map((option, idx) => (
-          <TouchableOpacity
-            key={idx}
-            style={[
-              styles.option,
-              selectedOption === option && styles.optionSelected,
-              answered &&
-                option === currentExercise.correctAnswer &&
-                styles.optionCorrect,
-              answered &&
-                selectedOption === option &&
-                option !== currentExercise.correctAnswer &&
-                styles.optionWrong,
-            ]}
-            onPress={() => !answered && setSelectedOption(option)}
-            disabled={answered}
-          >
-            <Text style={styles.optionText}>{option}</Text>
-          </TouchableOpacity>
-        ))}
+        {currentExercise?.alternatives.map((alternative) => {
+          const isSelected = selectedAlternativeId === alternative.id;
+          const isCorrectOption = alternative.isCorrect;
+          const showCorrectStyle = answered && isCorrectOption;
+          const showWrongStyle = answered && isSelected && !isCorrectOption;
 
-        {/* Botão de responder */}
+          return (
+            <TouchableOpacity
+              key={alternative.id}
+              style={[
+                styles.option,
+                isSelected && styles.optionSelected,
+                showCorrectStyle && styles.optionCorrect,
+                showWrongStyle && styles.optionWrong,
+              ]}
+              onPress={() => !answered && setSelectedAlternativeId(alternative.id)}
+              disabled={answered}
+            >
+              <Text style={styles.optionText}>{alternative.description}</Text>
+            </TouchableOpacity>
+          );
+        })}
+
         {!answered && (
           <Button
             label="Responder"
             onPress={handleAnswer}
-            disabled={!selectedOption}
+            disabled={!selectedAlternativeId}
           />
         )}
 
-        {/* Feedback */}
         {answered && (
           <View
             style={[
@@ -169,13 +116,9 @@ export function Activity() {
             <Text style={styles.feedbackText}>
               {isCorrect ? "✅ Resposta correta!" : "❌ Resposta incorreta!"}
             </Text>
-            <Text style={styles.explanation}>
-              {currentExercise?.explanation}
-            </Text>
           </View>
         )}
 
-        {/* Próxima atividade */}
         {answered && (
           <Button
             label={

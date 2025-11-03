@@ -7,6 +7,7 @@ import { ExerciseService } from 'src/Exercise/exercise.service';
 import { ExerciseTypeService } from 'src/ExerciseType/exercise.service';
 import { AlternativeService } from 'src/Alternative/alternative.service';
 import { LevelService } from 'src/Level/level.service';
+import { TopicUserService } from 'src/TopicUser/topicUser.service';
 
 @Controller('activities')
 export class ActivityController {
@@ -18,21 +19,22 @@ export class ActivityController {
     private readonly exerciseTypeService: ExerciseTypeService,
     private readonly alternativeService: AlternativeService,
     private readonly levelService: LevelService,
+    private readonly topicUserService: TopicUserService
   ) {}
 
-  @Get('/generate/topic/:topicId/level/:levelId')
+  @Get('/generate/topicUser/:topicUserId')
   async generateActivity(
-    @Param('topicId', ParseIntPipe) topicId: number,
-    @Param('levelId', ParseIntPipe) levelId: number,
+    @Param('topicUserId', ParseIntPipe) topicUserId: number,
   ) {
-    const topic = await this.topicService.getOne({ id: topicId });
-    const level = await this.levelService.getOne({ id: levelId });
+    const topicUser = await this.topicUserService.getOne({ id: topicUserId })
+    const topic = await this.topicService.getOne({ id: topicUser?.topicId });
+    const level = await this.levelService.getOne({ id: topicUser?.levelId });
     const exercisesQuantity = 3; // DEFINIR COMO VAI SER ESTA QUANTIDADE
-
-    const USE_AI = false; //Indica se deve gerar uma nova atividade, ou buscar uma pelo ID (testes)
+    
+    const USE_AI = true; //Indica se deve gerar uma nova atividade, ou buscar uma pelo ID (testes)
 
     const prompt = `
-        Preciso que gere uma atividade de ${topic?.name} de nível ${level}. 
+        Preciso que gere uma atividade de ${topic?.name} de nível ${level?.name}. 
         A estrutura será a seguinte:
         Retorne um JSON;
         A atividade possui um título que engloba todos exercícios (title);
@@ -79,6 +81,7 @@ export class ActivityController {
         ]
       }
     `;
+
 
     if (USE_AI) {
       const generatedActivity: GeneratedActivity =

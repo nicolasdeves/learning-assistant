@@ -1,4 +1,3 @@
-// src/components/LearningTopic.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button } from '../../../components/Button/Button';
@@ -16,7 +15,7 @@ export function LearningTopic({ topic, onStartActivity }: Props) {
 
     useEffect(() => {
         fetchQuantityDailyActivities();
-    }, [])
+    }, []);
 
     const fetchQuantityDailyActivities = async () => {
         const activities = googleUserId && await getActivitiesByUser(googleUserId)
@@ -32,20 +31,9 @@ export function LearningTopic({ topic, onStartActivity }: Props) {
                 </View>
             </View>
 
-            {/* <View style={styles.progressContainer}>
-                <View style={[styles.progressBar, { width: `${progress}%` }]} />
-            </View> */}
             <Text style={styles.progressText}>
-                Tarefas diárias: {activitiesQuantity}/{5} 
-                {/* definiir uma meta quando o usuario preeche a inscricao!!! */}
+                Tarefas diárias: {activitiesQuantity}/{topic.weeklyGoal} 
             </Text>
-
-            {/* {topic.lastActivity && (
-                <Text style={styles.lastActivity}>Última atividade: {topic.lastActivity}</Text>
-            )}
-            <Text style={styles.activitiesDone}>
-                Atividades realizadas: {topic.activitiesDone}
-            </Text> */}
 
             <Button
                 label='Iniciar Atividade'
