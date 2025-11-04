@@ -28,12 +28,23 @@ export function CommunityChat() {
     const [googleUserId, setGoogleUserId] = useState<string | null>(null);
     const [communityUserId, setCommunityUserId] = useState<number | null>(null);
 
+    const [firstScrollDone, setFirstScrollDone] = useState(false);
+
     const flatListRef = useRef<FlatList>(null);
 
     useEffect(() => {
         fetchUserId();
         fetchCommunityUserId();
     }, []);
+
+    useEffect(() => {
+        if (messages.length > 0 && !firstScrollDone) {
+            setTimeout(() => {
+                flatListRef.current?.scrollToEnd({ animated: false });
+                setFirstScrollDone(true);
+            }, 100);
+        }
+    }, [messages]);
 
     useEffect(() => {
         if (!googleUserId) return;
@@ -46,14 +57,6 @@ export function CommunityChat() {
 
         return () => clearInterval(interval);
     }, [googleUserId]);
-
-    useEffect(() => {
-        if (messages.length > 0) {
-            setTimeout(() => {
-                flatListRef.current?.scrollToEnd({ animated: true });
-            }, 80);
-        }
-    }, [messages]);
 
     const fetchUserId = async () => {
         const id = await getLoggedUserId();
@@ -80,14 +83,14 @@ export function CommunityChat() {
     };
 
     const renderMessage = ({ item }: { item: MessageResponse }) => {
-        const meu = item.communityUser.googleUserId.toString() === googleUserId;
-        const senderName = meu ? "Você" : item.communityUser.name || "Serginho";
+        const isMine = item.communityUser.googleUserId.toString() === googleUserId;
+        const senderName = isMine ? "Você" : item.communityUser.name || "Serginho";
 
         return (
-            <View style={[styles.msgWrapper, meu ? { alignItems: "flex-end" } : { alignItems: "flex-start" }]}>
+            <View style={[styles.msgWrapper, isMine ? { alignItems: "flex-end" } : { alignItems: "flex-start" }]}>
                 <Text style={styles.senderName}>{senderName}</Text>
 
-                <View style={[styles.msgContainer, meu ? styles.meuMsg : styles.outroMsg]}>
+                <View style={[styles.msgContainer, isMine ? styles.meuMsg : styles.outroMsg]}>
                     <Text style={styles.msgText}>{item.content}</Text>
                 </View>
             </View>
@@ -106,14 +109,14 @@ export function CommunityChat() {
                         keyExtractor={item => item.id.toString()}
                         renderItem={renderMessage}
                         style={styles.messages}
-                        
+
                         contentContainerStyle={{ paddingBottom: 20 }}
                     />
 
                     <View style={styles.inputArea}>
                         <TextInput
                             style={styles.input}
-                            placeholder="Manda tua ideia pra galera..."
+                            placeholder="Digite sua mensagem"
                             value={inputText}
                             onChangeText={setInputText}
                         />
@@ -124,13 +127,12 @@ export function CommunityChat() {
                     </View>
                 </KeyboardAvoidingView>
             </View>
-
         </Base>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { backgroundColor: '#fafafa' },
+    container: { display: 'contents' },
     title: { fontSize: 18, fontWeight: '700', padding: 16, color: '#111' },
     messages: { paddingHorizontal: 12 },
 
@@ -168,7 +170,8 @@ const styles = StyleSheet.create({
         padding: 12,
         backgroundColor: '#fff',
         borderTopWidth: 1,
-        borderTopColor: '#ddd'
+        borderTopColor: '#ddd',
+        // marginBottom: 90 SE TIVER QUE TIRAR O PADDING DO BASE!!
     },
     input: {
         flex: 1,

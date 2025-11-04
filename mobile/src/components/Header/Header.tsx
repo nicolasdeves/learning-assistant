@@ -6,11 +6,11 @@ import { getUserPhoto } from "../../auth/authentication";
 import { useEffect, useState } from "react";
 
 interface HeaderProps {
-    onHamburgerPress: () => void 
-    onCalendarPress: () => void 
+    onUserImagePress: () => void 
+    onDrawnerPress: () => void 
 }
 
-export function Header({ onHamburgerPress, onCalendarPress }: HeaderProps) {
+export function Header({ onUserImagePress, onDrawnerPress }: HeaderProps) {
 
   const [userImage, setUserImage] = useState<string>("https://randomuser.me/api/portraits/lego/1.jpg")
 
@@ -26,11 +26,11 @@ export function Header({ onHamburgerPress, onCalendarPress }: HeaderProps) {
   return (
     <SafeAreaView>
       <View style={headerStyles.header}>
-        <TouchableOpacity onPress={onHamburgerPress}>
+        <TouchableOpacity onPress={onUserImagePress}>
           <Image source={{uri: userImage}} style={headerStyles.headerUserImage} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={onCalendarPress}>
+        <TouchableOpacity onPress={onDrawnerPress}>
           <Image source={assets.menu} style={headerStyles.headerCalendarIcon} />
         </TouchableOpacity>
       </View>
