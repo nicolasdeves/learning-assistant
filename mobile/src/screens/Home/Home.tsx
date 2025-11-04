@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text } from "react-native";
+import { ScrollView, Text } from "react-native";
 import { Base } from "../Base/Base";
 import { AvailableTopics } from "./AvailableTopics";
 import { Tip } from "./Tip";
@@ -38,24 +38,25 @@ export function Home() {
   const redirect = async (topic: TopicResponse) => {
     const userAlreadyHasTopic = await verifyUserIsAlreadyRegistered(googleUserId, topic.id)
 
-    userAlreadyHasTopic ? navigation.navigate("Learning") : navigation.navigate("RegisterTopic", {topic})
+    userAlreadyHasTopic ? navigation.navigate("Learning") : navigation.navigate("RegisterTopic", { topic })
   }
 
   return (
     <Base>
-      <Text style={styles.welcomeText}>BEM-VINDO, {userName}</Text>
+      <ScrollView>
+        <Text style={styles.welcomeText}>BEM-VINDO {userName}</Text>
 
+        {topics && (
+          <AvailableTopics
+            topics={topics}
+            onSelectTopic={(topic) => redirect(topic)}
+          />
+        )}
 
-      {topics && (
-        <AvailableTopics
-          topics={topics}
-          onSelectTopic={(topic) => redirect(topic)}
-        />
-      )}
+        <Tip />
 
-      <Tip />
-
-      <Tools />
+        <Tools />
+      </ScrollView>
     </Base>
   );
 }

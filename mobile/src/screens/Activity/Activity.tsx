@@ -62,7 +62,7 @@ export function Activity() {
     }
   };
 
-  if (loading) return <Loading message="Buscando atividade..." />;
+  if (loading) return <Loading message="Gerando atividade..." />;
 
   return (
     <Base>

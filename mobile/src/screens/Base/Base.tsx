@@ -31,7 +31,7 @@ export const Base = ({ children }: BaseProps) => {
         onDrawnerPress={() => setDrawerOpen(true)}
       />
 
-      <View style={{ flex: 1, paddingBottom: 80 }}>
+      <View style={{ flex: 1 }}>
         {children}
       </View>
 

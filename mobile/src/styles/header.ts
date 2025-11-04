@@ -6,7 +6,9 @@ export const headerStyles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         marginLeft: 30,
-        marginRight: 30
+        marginRight: 30,
+        marginBottom: 20,
+        marginTop: 20
     },
 
     headerUserImage: {

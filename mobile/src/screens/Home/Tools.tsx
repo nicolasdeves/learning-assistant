@@ -13,10 +13,10 @@ export function Tools() {
         <View>
             <Text style={styles.second_title}> Ferramentas</Text>
 
-            <View style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+            <View style={{ display: "flex", flexDirection: "row", justifyContent: "center", marginBottom: 15 }}>
                 <InfoCard
                     title="Diário"
-                    height={60}
+                    height={70}
                     backgroundColor="#D9EEFA"
                     width={"40%"}
                     alignSelf="flex-start"
@@ -28,7 +28,7 @@ export function Tools() {
 
                 <InfoCard
                     title="Ritmo"
-                    height={60}
+                    height={70}
                     backgroundColor="#D9EEFA"
                     width={"40%"}
                     alignSelf="flex-start"

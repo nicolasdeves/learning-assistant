@@ -1,5 +1,5 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { RootStackParamList } from '../../interfaces/navbar';
 import { Base } from '../Base/Base';
 import { styles } from './styles';
@@ -58,7 +58,7 @@ export function RegisterTopic() {
             <Text style={styles.title}>Realizar inscrição</Text>
             <Text style={styles.topic_name}>{topic.name}</Text>
 
-            <View style={styles.form}>
+            <ScrollView style={styles.form}>
                 {
                     levelOptions && (
                         <Select
@@ -88,7 +88,7 @@ export function RegisterTopic() {
                     onPress={onFormSubmit}
                 />
 
-            </View>
+            </ScrollView>
         </Base>
 
 

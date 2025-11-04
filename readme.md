@@ -24,6 +24,13 @@
 
 - ./gradlew clean
 
+### Rodar no celular
+
+- adb devices (certificar que vá aparecer somente o celular - fechar o emulador)
+
+- npx react-native run-android --deviceId RX8M7135Q2B (o que foi exibido no comando anterior)
+
+
 ## Technologies
 
 - NestJS

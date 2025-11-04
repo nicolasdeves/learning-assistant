@@ -14,7 +14,6 @@ import { getLoggedUserId } from '../../../auth/authentication';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../../interfaces/navbar';
 import { getMessagesByCommunity, sendMessage } from '../../../service/message.service';
-import { Header } from '../../../components/Header/Header';
 import { Base } from '../../Base/Base';
 
 type CommunityRouteProp = RouteProp<RootStackParamList, "CommunityChat">;
@@ -37,12 +36,10 @@ export function CommunityChat() {
         fetchCommunityUserId();
     }, []);
 
+
     useEffect(() => {
         if (messages.length > 0 && !firstScrollDone) {
-            setTimeout(() => {
-                flatListRef.current?.scrollToEnd({ animated: false });
-                setFirstScrollDone(true);
-            }, 100);
+            goToEnd();
         }
     }, [messages]);
 
@@ -57,6 +54,13 @@ export function CommunityChat() {
 
         return () => clearInterval(interval);
     }, [googleUserId]);
+
+    const goToEnd = () => {
+        setTimeout(() => {
+            flatListRef.current?.scrollToEnd({ animated: false });
+            setFirstScrollDone(true);
+        }, 100);
+    }
 
     const fetchUserId = async () => {
         const id = await getLoggedUserId();
@@ -80,6 +84,7 @@ export function CommunityChat() {
 
         setInputText('');
         loadMessages();
+        goToEnd();
     };
 
     const renderMessage = ({ item }: { item: MessageResponse }) => {
