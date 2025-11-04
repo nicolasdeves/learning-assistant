@@ -37,8 +37,6 @@ export function Home() {
 
   const redirect = async (topic: TopicResponse) => {
     const userAlreadyHasTopic = await verifyUserIsAlreadyRegistered(googleUserId, topic.id)
-    console.log('userAlreadyHasTopic')
-    console.log(userAlreadyHasTopic)
 
     userAlreadyHasTopic ? navigation.navigate("Learning") : navigation.navigate("RegisterTopic", {topic})
   }

@@ -27,7 +27,6 @@ export class CommunityController {
 
     //community user p ver se o ususario ja ta incrito na comunidade
 
-    console.log(communities)
     return communities;
   }
 }

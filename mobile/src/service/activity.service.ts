@@ -17,8 +17,6 @@ export async function getActivityByTopicUser(topicUser: TopicUserResponse): Prom
     try {
         const response = await api.get(`/activities/generate/topicUser/${topicUser.id}`);
 
-        console.log('atividadeeeeeeee')
-        console.log(response.data)
         return response.data;
     } catch (error: any) {
         console.log(error)

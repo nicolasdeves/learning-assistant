@@ -29,7 +29,6 @@ export class CommunityUserController {
       }
     })
 
-    console.log(communitiesUsers);
     return communitiesUsers;
   }
 }

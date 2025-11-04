@@ -46,7 +46,6 @@ export class AiController {
             const cleanResponse = response && response.replace(/```json\n?|\n?```/g, '');
 
             const jsonResponse = cleanResponse && JSON.parse(cleanResponse);
-            console.log(jsonResponse.response);
 
             return jsonResponse.response;
         } catch (error) {

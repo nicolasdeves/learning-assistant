@@ -6,7 +6,6 @@ export async function getCommunitiesUsers(googleUserId: string) {
       `communitiesUsers/getByUser/${googleUserId}`,
     );
 
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
