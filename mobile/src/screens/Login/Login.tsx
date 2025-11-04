@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { loginWithGoogle } from "../../auth/authentication";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { makeNavigation } from "../../service/navigation.service";
+import { assets } from "../../assets/assets";
 
 export function Login() {
   const navigation = makeNavigation();
@@ -11,11 +12,25 @@ export function Login() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
 
-        <Text style={styles.title}>Bem-vindo(a)!</Text>
-        <Text style={styles.subtitle}>Faça login para continuar</Text>
-        <TouchableOpacity style={styles.button} onPress={() => {loginWithGoogle(navigation)}}>
-          <Text style={styles.buttonText}>Entrar com Google</Text>
+        {/* Logo */}
+        <Image
+          source={assets.brain}
+          style={styles.logo}
+        />
+
+        <Text style={styles.title}>Bem-vindo</Text>
+        <Text style={styles.subtitle}>
+          Bora evoluir seu conhecimento
+        </Text>
+
+        <TouchableOpacity style={styles.googleButton} onPress={() => loginWithGoogle(navigation)}>
+          <Image
+            source={assets.google} // ícone do Google
+            style={styles.googleIcon}
+          />
+          <Text style={styles.googleText}>Entrar com Google</Text>
         </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );
@@ -24,7 +39,6 @@ export function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -33,43 +47,49 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 120,
-    height: 120,
-    marginBottom: 32,
-    borderRadius: 60, // se quiser circular
+    width: 110,
+    height: 110,
+    marginBottom: 28,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
-    marginBottom: 8,
-    color: "#333",
+    fontSize: 30,
+    fontWeight: "800",
+    color: '#68c6fdff',
+    marginBottom: 6,
   },
   subtitle: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 24,
+    fontSize: 15,
+    color: "#555",
+    textAlign: "center",
+    marginBottom: 40,
+    paddingHorizontal: 10,
   },
-  button: {
+  googleButton: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#fff",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
-    elevation: 3, // sombra no Android
-    shadowColor: "#000", // sombra no iOS
+    elevation: 3,
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 3 },
+    width: '100%',
+    paddingRight: 30,
   },
-  icon: {
-    width: 24,
-    height: 24,
+  googleIcon: {
+    width: 22,
+    height: 22,
     marginRight: 12,
+    marginLeft: 14,
   },
-  buttonText: {
+  googleText: {
     fontSize: 16,
-    color: "#333",
+    color: "#222",
     fontWeight: "600",
+    textAlign: 'center'
   },
 });

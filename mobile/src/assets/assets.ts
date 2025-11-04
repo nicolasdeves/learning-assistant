@@ -16,4 +16,6 @@ export const assets = {
     // Home
     book: require("./icons/book.png"),
     fire: require("./icons/fire.png"),
+
+    google: require("./icons/google.png"),
   };

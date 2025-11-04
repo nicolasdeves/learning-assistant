@@ -7,7 +7,7 @@ import { Text, View } from "react-native";
 export function Tip() {
     return (
         <View>
-            <Text style={styles.second_title}> Dicas de IA</Text>
+            <Text style={styles.second_title}> Dica da IA</Text>
             <InfoCard
                 title="Pratique a leitura em voz alta"
                 description="Ler em voz alta ajuda a melhorar a pronúncia e fluência"
