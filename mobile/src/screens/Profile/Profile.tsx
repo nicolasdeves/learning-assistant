@@ -3,6 +3,8 @@ import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { Base } from "../Base/Base";
 import { getLoggedUser } from "../../auth/authentication";
 import { styles } from "./styles";
+import { getActivityUserByUser } from "../../service/activityUser.service";
+import { ActivityUserRespose } from "../../interfaces/activityUser";
 
 export function Profile() {
     const [user, setUser] = useState<any>(null);
@@ -11,8 +13,14 @@ export function Profile() {
 
     useEffect(() => {
         fetchUser();
-        fetchTopics();
     }, []);
+
+    useEffect(() => {
+        console.log('aaa', user)
+        if (user) {
+            fetchTopics();
+        }
+    }, [user]);
 
     const fetchUser = async () => {
         const user = await getLoggedUser();
@@ -20,24 +28,40 @@ export function Profile() {
     };
 
     const fetchTopics = async () => {
-        // const userTopics = await getUserTopics();
-        const mockTopics = [
-            { id: 1, name: "English B1 Grammar", totalActivities: 32 },
-            { id: 2, name: "Vocabulary Basics", totalActivities: 15 },
-            { id: 3, name: "Listening Practice", totalActivities: 8 },
-        ];
+        const activitiesUser = await getActivityUserByUser(user.uid);
 
-        setTopics(mockTopics);
+        if (activitiesUser) {
+            const groupedByTopic = activitiesUser.reduce((acc, activityUser) => {
+                const topicId = activityUser.activity.topicId;
+
+                if (!acc[topicId]) {
+                    acc[topicId] = [];
+                }
+
+                acc[topicId].push(activityUser);
+                return acc;
+            }, {} as Record<number, ActivityUserRespose[]>);
+
+            console.log(groupedByTopic);
+
+            const topicsWithTotalActivities = Object.values(groupedByTopic).map(group => {
+                const topic = group[0].activity.topic; // pega info do topic do primeiro item do grupo
+                return {
+                    id: topic.id,
+                    name: topic.name,
+                    totalActivities: group.length, // quantidade de atividades naquele topic
+                };
+            });
+
+            console.log(topicsWithTotalActivities)
+
+            setTopics(topicsWithTotalActivities);
+        }
     };
 
     return (
         <Base>
             <View style={styles.container}>
-
-                {/* {user?.photoURL && (
-                    <Image source={{ uri: user.photoURL }} style={styles.avatar} />
-                )} */}
-
                 <Text style={styles.name}>{user?.displayName}</Text>
                 <Text style={styles.email}>{user?.email}</Text>
 

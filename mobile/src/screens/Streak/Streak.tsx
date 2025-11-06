@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { Base } from "../Base/Base";
+import { getActivityUserByUser } from "../../service/activityUser.service";
+import { getLoggedUserId } from "../../auth/authentication";
 
-const completed = ["2025-02-01", "2025-02-03", "2025-02-04", "2025-02-07"];
+// const completed = ["2025-02-03", "2025-02-04", "2025-02-07"];
 
 const monthNames = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -11,8 +13,11 @@ const monthNames = [
 ];
 
 export default function Streak() {
-    const [month, setMonth] = useState(2);
-    const [year, setYear] = useState(2025);
+    const now = new Date();
+    const [month, setMonth] = useState(now.getMonth() + 1);;
+    const [year, setYear] = useState(now.getFullYear());;
+    const [activitiesDoneDate, setActivitiesDoneDate] = useState<string[]>([])
+    const [googleUserId, setGoogleUserId] = useState<string | null>(null)
 
     function changeMonth(direction: number) {
         let newMonth = month + direction;
@@ -48,6 +53,48 @@ export default function Streak() {
             .padStart(2, "0")}`;
     }
 
+    useEffect(() => {
+        fetchUser();
+    }, [])
+
+    useEffect(() => {
+        if (googleUserId) {
+            fetchActivities(googleUserId)
+        }
+    }, [googleUserId])
+
+    const fetchActivities = async (googleUserId: string) => {
+        const activitiesUser = await getActivityUserByUser(googleUserId);
+
+        if (activitiesUser) {
+            console.log(activitiesUser)
+            const activitiesDoneDate = activitiesUser.map(activity => activity.createdAt.split('T')[0]);
+            console.log(activitiesDoneDate)
+
+            console.log()
+            setActivitiesDoneDate(activitiesDoneDate);
+        }
+    }
+
+    const fetchUser = async () => {
+        const userId = await getLoggedUserId();
+        userId && setGoogleUserId(userId);
+    }
+
+    // filtra só as datas do mês/ano atual
+    const activitiesThisMonth = activitiesDoneDate.filter(date => {
+        const d = new Date(date);
+        return d.getFullYear() === year && (d.getMonth() + 1) === month;
+    });
+
+    // transforma em um Set pra pegar só dias únicos
+    const uniqueDaysThisMonth = new Set(activitiesThisMonth);
+
+    // quantidade de dias com pelo menos uma atividade
+    const frequency = uniqueDaysThisMonth.size;
+
+
+
     return (
         <Base>
             <View style={styles.container}>
@@ -79,7 +126,7 @@ export default function Streak() {
                 {/* Dias */}
                 <View style={styles.grid}>
                     {days.map((day, i) => {
-                        const isCompleted = day && completed.includes(format(day));
+                        const isCompleted = day && activitiesDoneDate.includes(format(day));
 
                         return (
                             <TouchableOpacity
@@ -102,7 +149,7 @@ export default function Streak() {
 
                 <View style={styles.streakBox}>
                     <Text style={styles.streakLabel}>Frequência mensal</Text>
-                    <Text style={styles.streakNumber}>4 dias</Text>
+                    <Text style={styles.streakNumber}>{frequency}</Text>
                 </View>
             </View>
         </Base>

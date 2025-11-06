@@ -41,7 +41,6 @@ export const styles = StyleSheet.create({
   },
   dayText: { fontSize: 14, color: '#000' },
   streakBox: {
-    marginTop: 24,
     padding: 20,
     borderRadius: 12,
     backgroundColor: '#D9EEFA', // azul claro background

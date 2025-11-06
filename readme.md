@@ -14,6 +14,8 @@
 
 - npx prisma db seed
 
+- npx prisma migrate reset
+
 ### Mobile
 
 - npm start 

@@ -1,4 +1,5 @@
 import { ExerciseRespose } from "./exercise"
+import { TopicResponse } from "./topic"
 
 interface ActivityRespose {
   id: number
@@ -8,6 +9,7 @@ interface ActivityRespose {
   createdAt: string
   updatedAt: string
   exercises: ExerciseRespose[]
+  topic: TopicResponse
 }
 
 

@@ -8,7 +8,9 @@ export class ActivityService extends DefaultService<
   Prisma.ActivityUncheckedCreateInput,
   Prisma.ActivityUpdateInput,
   PrismaClient['activity'],
-  Prisma.ActivityWhereInput
+  Prisma.ActivityWhereInput,
+  Prisma.ActivityInclude
+  
 > {
   constructor(private prisma: PrismaClient) {
     super(prisma.activity);

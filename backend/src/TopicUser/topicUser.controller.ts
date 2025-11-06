@@ -63,10 +63,6 @@ export class TopicUserController {
       topic: true
     });
 
-    const log = new Logger()
-
-    log.warn(topicsUser)
-
     return topicsUser;
   }
 }

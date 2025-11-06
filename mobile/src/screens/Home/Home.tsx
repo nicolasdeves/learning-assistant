@@ -26,6 +26,7 @@ export function Home() {
 
   const fetchUser = async () => {
     const user = await getLoggedUser();
+    if (!user) navigation.navigate("Login");
     if (user?.displayName) setUserName(user.displayName);
     if (user?.uid) setGoogleUserId(user.uid)
   };

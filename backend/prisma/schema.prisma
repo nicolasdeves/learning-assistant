@@ -19,8 +19,6 @@ model Topic {
   notifications Notification[]
   levels        Level[]
   Daily         Daily[]
-
-  @@map("topic")
 }
 
 model TopicUser {
@@ -32,8 +30,6 @@ model TopicUser {
 
   topic Topic @relation(fields: [topicId], references: [id])
   level Level @relation(fields: [levelId], references: [id])
-
-  @@map("topic_user")
 }
 
 model Level {
@@ -48,19 +44,18 @@ model Level {
 }
 
 model Activity {
-  id           Int      @id @default(autoincrement())
-  name         String
-  date         DateTime
-  topicId      Int      @map("topic_id")
+  id      Int      @id @default(autoincrement())
+  name    String
+  date    DateTime
+  topicId Int      @map("topic_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   exercises Exercise[]
 
-  topic Topic @relation(fields: [topicId], references: [id])
-
-  @@map("activity")
+  topic         Topic          @relation(fields: [topicId], references: [id])
+  activityUsers ActivityUser[]
 }
 
 model Exercise {
@@ -77,8 +72,6 @@ model Exercise {
   activity     Activity      @relation(fields: [activityId], references: [id])
   alternatives Alternative[]
   answers      Answer[]
-
-  @@map("exercise")
 }
 
 model ExerciseType {
@@ -88,8 +81,6 @@ model ExerciseType {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   exercises Exercise[]
-
-  @@map("exercise_type")
 }
 
 model Alternative {
@@ -101,8 +92,6 @@ model Alternative {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   exercise Exercise @relation(fields: [exerciseId], references: [id])
-
-  @@map("alternative")
 }
 
 model Answer {
@@ -113,8 +102,6 @@ model Answer {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   exercise Exercise @relation(fields: [exerciseId], references: [id])
-
-  @@map("answer")
 }
 
 model Community {
@@ -165,4 +152,19 @@ model Daily {
 
   topic Topic @relation(fields: [topicId], references: [id])
   level Level @relation(fields: [levelId], references: [id])
+}
+
+model ActivityUser {
+  id           Int    @id @default(autoincrement())
+  googleUserId String
+  activityId   Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  activity Activity @relation(fields: [activityId], references: [id])
+}
+
+model User {
+  id           Int    @id @default(autoincrement())
+  googleUserId String
+  name String
 }

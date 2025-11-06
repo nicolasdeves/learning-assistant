@@ -13,6 +13,8 @@ import { LevelModule } from './Level/level.module';
 import { CommunityModule } from './Community/community.module';
 import { MessageModule } from './Message/message.module';
 import { CommunityUserModule } from './CommunityUser/communityUser.module';
+import { UserModule } from './User/user.module';
+import { ActivityUserModule } from './ActivityUser/activityUser.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -30,7 +32,9 @@ import { CommunityUserModule } from './CommunityUser/communityUser.module';
   LevelModule,
   CommunityModule,
   MessageModule,
-  CommunityUserModule
+  CommunityUserModule,
+  ActivityUserModule,
+  UserModule
   ],
   controllers: [],
   providers: [],

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Base } from "../Base/Base";
 import { styles } from "./styles";
 import { RouteProp, useRoute } from "@react-navigation/native";
@@ -9,6 +9,8 @@ import { Loading } from "../../components/Loading/Loading";
 import { makeNavigation } from "../../service/navigation.service";
 import { getActivityByTopicUser } from "../../service/activity.service";
 import { ActivityRespose } from "../../interfaces/activity";
+import { getLoggedUserId } from "../../auth/authentication";
+import { registerUserActivity } from "../../service/activityUser.service";
 
 type ActivityRouteProp = RouteProp<RootStackParamList, "Activity">;
 
@@ -20,6 +22,7 @@ export function Activity() {
   const [loading, setLoading] = useState(true);
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [selectedAlternativeId, setSelectedAlternativeId] = useState<number | null>(null);
+  const [googleUserId, setGoogleUserId] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
@@ -27,6 +30,7 @@ export function Activity() {
 
   useEffect(() => {
     fetchActivity();
+    fetchUser();
   }, []);
 
   const fetchActivity = async () => {
@@ -35,6 +39,11 @@ export function Activity() {
     activity && setActivity(activity);
     setLoading(false);
   };
+
+  const fetchUser = async () => {
+    const userId = await getLoggedUserId();
+    userId && setGoogleUserId(userId);
+  }
 
   const currentExercise = activity?.exercises[exerciseIndex];
 
@@ -50,7 +59,7 @@ export function Activity() {
     setAnswered(true);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     setAnswered(false);
     setSelectedAlternativeId(null);
     setIsCorrect(null);
@@ -58,6 +67,10 @@ export function Activity() {
     if (exerciseIndex < (activity?.exercises.length || 0) - 1) {
       setExerciseIndex(exerciseIndex + 1);
     } else {
+      if (activity && googleUserId) {
+        console.log('entrou p registrar...')
+        await registerUserActivity(activity.id, googleUserId);
+      }
       navigation.navigate("Learning");
     }
   };
@@ -66,7 +79,7 @@ export function Activity() {
 
   return (
     <Base>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.counter}>
           Exercício {exerciseIndex + 1}/{activity?.exercises.length}
         </Text>
@@ -129,7 +142,7 @@ export function Activity() {
             onPress={handleNext}
           />
         )}
-      </View>
+      </ScrollView>
     </Base>
   );
 }
