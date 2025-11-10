@@ -2,7 +2,7 @@ export class DefaultService<
   Model,
   Create,
   Update,
-  Delegate extends { 
+  Delegate extends {
     findMany: (...args: any) => any;
     findUnique: (...args: any) => any;
     findFirst: (...args: any) => any;
@@ -11,7 +11,7 @@ export class DefaultService<
     delete: (...args: any) => any;
   },
   Where,
-  Include = unknown
+  Include = unknown,
 > {
   constructor(protected delegate: Delegate) {}
 
@@ -35,7 +35,16 @@ export class DefaultService<
     return this.delegate.delete({ where: { id } });
   }
 
-  async getByConditions(where: Where, include?: Include): Promise<Model[]> {
-    return this.delegate.findMany({ where, include });
+  async getByConditions(
+    where: Where,
+    include?: Include,
+    orderBy?: Record<string, 'asc' | 'desc'>,
+  ): Promise<Model[]> {
+    return this.delegate.findMany({
+      where,
+      include,
+      orderBy,
+    });
   }
+  
 }

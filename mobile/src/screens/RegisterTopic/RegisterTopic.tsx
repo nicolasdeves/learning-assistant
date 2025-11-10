@@ -11,6 +11,7 @@ import { addDailyRegister } from '../../service/daily.service';
 import { linkUserToTopic } from '../../service/topicUser.service';
 import { getLoggedUserId } from '../../auth/authentication';
 import { makeNavigation } from '../../service/navigation.service';
+import { addUserJournalNote } from '../../service/journal.service';
 
 type RegisterTopicRouteProp = RouteProp<RootStackParamList, 'RegisterTopic'>;
 
@@ -47,7 +48,7 @@ export function RegisterTopic() {
         const googleUserId = await getLoggedUserId();
         if (selectedLevelId && googleUserId) {
             await linkUserToTopic(googleUserId, topic.id, selectedLevelId, selectedWeeklyGoal)
-            await addDailyRegister(wantToLearnDescription, topic.id, selectedLevelId)
+            await addUserJournalNote(wantToLearnDescription, topic.id, selectedLevelId, googleUserId)
 
             navigation.navigate("Learning")
         }

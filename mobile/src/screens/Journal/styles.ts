@@ -2,13 +2,11 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   pageTitle: {
-    fontSize: 22,
-    color: "#333",
+    fontSize: 20,
+    color: '#333333',
     marginLeft: 30,
-    marginTop: 10,
-    fontFamily: "sans-serif-light",
+    fontFamily: 'sans-serif-light',
   },
-
   subtitle: {
     fontSize: 16,
     color: "#555",

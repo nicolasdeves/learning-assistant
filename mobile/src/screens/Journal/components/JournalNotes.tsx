@@ -1,33 +1,51 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { styles } from "../styles";
 import { Base } from "../../Base/Base";
 import { makeNavigation } from "../../../service/navigation.service";
-
-const mockNotes = [
-  { id: 1, text: "Estudei past simple hoje, foi suave", date: "2025-11-03" },
-  { id: 2, text: "Errei muito preposition, help pls", date: "2025-11-02" },
-];
+import { useEffect, useState } from "react";
+import { JournalResponse } from "../../../interfaces/journal";
+import { getUserJournalNotes } from "../../../service/journal.service";
+import { getLoggedUserId } from "../../../auth/authentication";
+import { RootStackParamList } from "../../../interfaces/navbar";
+import { formatDateTime } from "../../../service/god.service";
 
 export function JournalNotes() {
-  const route = useRoute();
-  const navigation = makeNavigation();
-  const { topic }: any = route.params;
+  type JournalNotesRouteProp = RouteProp<RootStackParamList, 'JournalNotes'>;
 
+  const route = useRoute<JournalNotesRouteProp>();
+  const navigation = makeNavigation();
+  const { topic } = route.params;
+  const [journalNotes, setJournalNotes] = useState<JournalResponse[] | null>(null);
+
+  useEffect(() => {
+    console.log(topic)
+    fetchJournalNotes();
+  }, [])
+
+  const fetchJournalNotes = async () => {
+    const googleUserId = await getLoggedUserId();
+    const journalNotes = googleUserId && await getUserJournalNotes(googleUserId, topic.id);
+    setJournalNotes(journalNotes);
+  }
   return (
     <Base>
       <Text style={styles.pageTitle}>{topic.name}</Text>
       <Text style={styles.subtitle}>Suas anotações</Text>
 
       <ScrollView style={{ marginTop: 12 }}>
-        {mockNotes.map(n => (
+        {journalNotes && journalNotes.map(note => (
           <TouchableOpacity
-            key={n.id}
-            onPress={() => navigation.navigate("JournalViewNote", { note: n })}
+            key={note.id}
+            onPress={() => navigation.navigate("JournalViewNote", { note: note })}
             style={styles.noteItem}
           >
-            <Text style={styles.noteDate}>{n.date}</Text>
-            <Text style={styles.notePreview}>{n.text}</Text>
+            <Text style={styles.noteDate}>{formatDateTime(note.createdAt)}</Text>
+            <Text style={styles.notePreview}>
+              {note.content.length > 40
+                ? `${note.content.slice(0, 40)}...`
+                : note.content}
+            </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>

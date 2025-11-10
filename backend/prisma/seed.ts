@@ -28,6 +28,14 @@ async function main() {
     }
   })
 
+    await prisma.community.create({
+    data: {
+      id: 1,
+      name: "Inglês",
+      topicId: 1,
+    }
+  })
+
   console.log('🌱 Seed executado com sucesso!');
 }
 

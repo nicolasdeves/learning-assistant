@@ -71,7 +71,7 @@ export function Activity() {
         console.log('entrou p registrar...')
         await registerUserActivity(activity.id, googleUserId);
       }
-      navigation.navigate("Learning");
+      topicUser.topic && navigation.navigate("JournalCreateNote", { topic: topicUser.topic, message: "Escreva o que achou da atividade. Suas dificuldades, facilidades ou o que deseja aprender daqui para frente" });
     }
   };
 

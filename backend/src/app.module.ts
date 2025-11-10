@@ -5,7 +5,6 @@ import { DefaultModule } from './Default/default.module';
 import { TopicModule } from './Topic/topic.module';
 import { ActivityModule } from './Activity/activity.module';
 import { TopicUserModule } from './TopicUser/topicUser.module';
-import { DailyModule } from './Daily/daily.module';
 import { ExerciseModule } from './Exercise/exercise.module';
 import { ExerciseTypeModule } from './ExerciseType/exercise.module';
 import { AlternativeModule } from './Alternative/alternative.module';
@@ -15,6 +14,7 @@ import { MessageModule } from './Message/message.module';
 import { CommunityUserModule } from './CommunityUser/communityUser.module';
 import { UserModule } from './User/user.module';
 import { ActivityUserModule } from './ActivityUser/activityUser.module';
+import { JournalModule } from './Journal/journal.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -25,7 +25,6 @@ import { ActivityUserModule } from './ActivityUser/activityUser.module';
   TopicModule,
   ActivityModule,
   TopicUserModule,
-  DailyModule,
   AlternativeModule,
   ExerciseModule,
   ExerciseTypeModule,
@@ -34,7 +33,8 @@ import { ActivityUserModule } from './ActivityUser/activityUser.module';
   MessageModule,
   CommunityUserModule,
   ActivityUserModule,
-  UserModule
+  UserModule,
+  JournalModule
   ],
   controllers: [],
   providers: [],

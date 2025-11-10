@@ -1,4 +1,5 @@
 import { CommunityResponse } from './community';
+import { JournalResponse } from './journal';
 import { TopicResponse } from './topic';
 import { TopicUserResponse } from './topicUser';
 
@@ -18,24 +19,15 @@ export type RootStackParamList = {
 JournalTopics: undefined;
 
   JournalNotes: {
-    topic: {
-      id: number;
-      name: string;
-    };
+    topic: TopicResponse
   };
 
   JournalViewNote: {
-    note: {
-      id: number;
-      text: string;
-      date: string;
-    };
+    note: JournalResponse;
   };
 
   JournalCreateNote: {
-    topic: {
-      id: number;
-      name: string;
-    };
+    topic: TopicResponse,
+    message?: string
   };
 };
