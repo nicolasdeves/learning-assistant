@@ -26,7 +26,6 @@ export class MessageController {
   @Post()
   @HttpCode(201)
   async create(@Body() body: Prisma.MessageUncheckedCreateInput) {
-    console.log(JSON.stringify(body))
     return await this.messageService.create(body);
   }
 }

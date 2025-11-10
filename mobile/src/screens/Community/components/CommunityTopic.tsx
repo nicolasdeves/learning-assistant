@@ -16,7 +16,7 @@ export function CommunityTopic({ community, onEnterCommunity }: Props) {
       </View>
 
       <Button 
-        label="Entrar na Comunidade" 
+        label="Acessar Comunidade" 
         onPress={() => onEnterCommunity(community)} 
       />
     </View>

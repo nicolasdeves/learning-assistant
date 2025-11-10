@@ -15,6 +15,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../../interfaces/navbar';
 import { getMessagesByCommunity, sendMessage } from '../../../service/message.service';
 import { Base } from '../../Base/Base';
+import { getCommunityUser } from '../../../service/communityUser.service';
 
 type CommunityRouteProp = RouteProp<RootStackParamList, "CommunityChat">;
 
@@ -33,8 +34,11 @@ export function CommunityChat() {
 
     useEffect(() => {
         fetchUserId();
-        fetchCommunityUserId();
     }, []);
+
+    useEffect(() => {
+        fetchCommunityUserId();
+    }, [googleUserId]);
 
 
     useEffect(() => {
@@ -68,8 +72,11 @@ export function CommunityChat() {
     };
 
     const fetchCommunityUserId = async () => {
-        // depois tu vai pegar isso via API
-        setCommunityUserId(1);
+        console.log('entrou fetchCommunityUserId')
+        const communityUser = googleUserId && await getCommunityUser(googleUserId, community.id);
+        communityUser && setCommunityUserId(communityUser.id);
+        communityUser && console.log(communityUser.id)
+
     };
 
     const loadMessages = async () => {
@@ -79,6 +86,8 @@ export function CommunityChat() {
 
     const handleSend = async () => {
         if (inputText.trim() && googleUserId && communityUserId) {
+            console.log('enviando mensagem...')
+            console.log(communityUserId)
             await sendMessage(communityUserId, inputText);
         }
 
