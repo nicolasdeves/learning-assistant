@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_IP = '192.168.0.104';
+const BACKEND_IP = '192.168.0.103';
 
 
 export const api = axios.create({

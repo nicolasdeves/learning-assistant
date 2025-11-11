@@ -9,19 +9,21 @@ export const styles = StyleSheet.create({
   },
 
   second_title: {
-    fontSize: 18,
-    color: '#333333',
-    textAlign: 'left',
-    marginTop: 30,
-    marginLeft: 30,
-    fontFamily: 'sans-serif-light',
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#0A3D62',
+    marginTop: 30,
+    marginLeft: 25,
+  },
+
+  scroll: {
+    marginTop: 10,
   },
 
   activityItem: {
     width: 140,
     height: 150,
-    backgroundColor: "#D9EEFA",
+    backgroundColor: '#D9EEFA',
     marginLeft: 30,
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -29,8 +31,6 @@ export const styles = StyleSheet.create({
     elevation: 10,
 
     borderRadius: 10,
-    
-
   },
 
   activityImage: {
@@ -41,13 +41,37 @@ export const styles = StyleSheet.create({
   },
 
   activityDescription: {
-    color: '#000000', 
+    color: '#000000',
     fontSize: 16,
     textAlign: 'center',
     fontFamily: 'sans-serif-light',
   },
 
-  scroll: {
-    marginTop: 10,
+  topicCard: {
+    backgroundColor: '#D9EEFA',
+    borderRadius: 18,
+    marginRight: 15,
+    width: 120,
+    height: 140,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 6,
+  },
+
+  topicEmoji: {
+    fontSize: 28,
+    marginBottom: 10,
+  },
+
+  topicText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#0A3D62',
+    textAlign: 'center',
+    paddingHorizontal: 10,
   },
 });
