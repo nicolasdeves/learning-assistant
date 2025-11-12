@@ -31,7 +31,7 @@ export class ActivityController {
     const level = await this.levelService.getOne({ id: topicUser?.levelId });
     const exercisesQuantity = 3; // DEFINIR COMO VAI SER ESTA QUANTIDADE
     
-    const USE_AI = false; //Indica se deve gerar uma nova atividade, ou buscar uma pelo ID (testes)
+    const USE_AI = true; //Indica se deve gerar uma nova atividade, ou buscar uma pelo ID (testes)
 
     const prompt = `
         Preciso que gere uma atividade de ${topic?.name} de nível ${level?.name}. 
