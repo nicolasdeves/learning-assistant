@@ -43,8 +43,6 @@ export class JournalController {
   @Post()
   @HttpCode(201)
   async create(@Body() body: Prisma.JournalUncheckedCreateInput) {
-    console.log('entrou aquiii');
-    console.log(body);
     if (!body.levelId) {
       const topicUser = await this.topicUserService.getOne({
         googleUserId: body.googleUserId,
@@ -55,6 +53,11 @@ export class JournalController {
         body.levelId = topicUser.levelId;
       }
     }
-    return await this.journalService.create(body);
+
+    if (body.content) {
+      await this.journalService.create(body);
+    }
+
+    return;
   }
 }

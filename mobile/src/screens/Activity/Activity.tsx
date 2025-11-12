@@ -68,7 +68,6 @@ export function Activity() {
       setExerciseIndex(exerciseIndex + 1);
     } else {
       if (activity && googleUserId) {
-        console.log('entrou p registrar...')
         await registerUserActivity(activity.id, googleUserId);
       }
       topicUser.topic && navigation.navigate("JournalCreateNote", { topic: topicUser.topic, message: "Escreva o que achou da atividade. Suas dificuldades, facilidades ou o que deseja aprender daqui para frente" });

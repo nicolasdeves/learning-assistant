@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { TopicUserService } from './topicUser.service';
 import { Prisma } from '@prisma/client';
@@ -64,5 +65,23 @@ export class TopicUserController {
     });
 
     return topicsUser;
+  }
+
+  @Put()
+  async updateTopicUser(@Body() body: Prisma.TopicUserUncheckedCreateInput) {
+    console.log('aa')
+    try {
+      const topicUser = await this.topicUserService.getOne({
+        googleUserId: body.googleUserId,
+        topicId: body.topicId,
+      });
+
+      if (topicUser) {
+         await this.topicUserService.update(topicUser.id, body)
+      }
+    } catch (error: any) {
+      console.log(error);
+      return { error, message: 'Error creating topic user' };
+    }
   }
 }

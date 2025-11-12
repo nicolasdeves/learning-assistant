@@ -16,7 +16,6 @@ export function Profile() {
     }, []);
 
     useEffect(() => {
-        console.log('aaa', user)
         if (user) {
             fetchTopics();
         }

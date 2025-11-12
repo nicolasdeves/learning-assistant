@@ -31,9 +31,9 @@ export function LearningTopic({ topic, onStartActivity }: Props) {
                 </View>
             </View>
 
-            <Text style={styles.progressText}>
+            {/* <Text style={styles.progressText}>
                 Tarefas diárias: {activitiesQuantity}/{topic.weeklyGoal} 
-            </Text>
+            </Text> */}
 
             <Button
                 label='Iniciar Atividade'

@@ -73,31 +73,31 @@ export function Drawer({ isOpen, onClose, onLogoff }: { isOpen: boolean, onClose
         {/* Menu */}
         <View style={{ marginBottom: 24 }}>
           <MenuItem label="Perfil" onPress={() => {navigation.navigate("Profile")}} />
-          <MenuItem label="Meus tópicos" onPress={() => { navigation.navigate("Home"); onClose(); }} />
+          <MenuItem label="Meus tópicos" onPress={() => { navigation.navigate("MyTopics"); onClose(); }} />
           <MenuItem label="Notificações" onPress={() => {}} />
-          <MenuItem
+          {/* <MenuItem
             label="Começar a ensinar"
             onPress={() => {}}
-          />
+          /> */}
         </View>
 
-        <View style={{ height: 1, backgroundColor: "#eee", marginVertical: 16 }} />
+        {/* <View style={{ height: 1, backgroundColor: "#eee", marginVertical: 16 }} /> */}
 
         {/* Stats */}
         <View style={{ marginBottom: 30 }}>
-          <Text style={{ fontSize: 13, color: "#777", marginBottom: 6 }}>
+          {/* <Text style={{ fontSize: 13, color: "#777", marginBottom: 6 }}>
             Atividades completadas
           </Text>
           <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 12 }}>
             47
-          </Text>
+          </Text> */}
 
-          <Text style={{ fontSize: 13, color: "#777", marginBottom: 6 }}>
+          {/* <Text style={{ fontSize: 13, color: "#777", marginBottom: 6 }}>
             Streak
           </Text>
           <Text style={{ fontSize: 16, fontWeight: "600" }}>
             12 dias
-          </Text>
+          </Text> */}
         </View>
 
         <View style={{ height: 1, backgroundColor: "#eee", marginBottom: 16 }} />

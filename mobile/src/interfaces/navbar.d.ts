@@ -14,6 +14,7 @@ export type RootStackParamList = {
   CommunityChat: { community: CommunityResponse }
   Profile: undefined;
   Streak: undefined;
+  MyTopics: undefined;
 
 
 JournalTopics: undefined;

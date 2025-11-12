@@ -99,7 +99,7 @@ export default function Streak() {
         <Base>
             <View style={styles.container}>
                 <Text style={styles.title}>Ritmo de Estudos</Text>
-                <Text style={styles.subtitle}>Cada dia estudado = XP + memória turbinada </Text>
+                <Text style={styles.subtitle}>  </Text>
 
                 {/* Header Mês */}
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 20, marginBottom: 10 }}>

@@ -42,3 +42,20 @@ export async function getTopicUserByUser(googleUserId: string) {
   }
 }
 
+export async function updateTopicUser(googleUserId: string, topicId: number, levelId: number, weeklyGoal: number) {
+  try {
+    const body: TopicUserRequest = {
+      googleUserId,
+      topicId,
+      levelId,
+      weeklyGoal
+    };
+
+    console.log('updateTopicUser')
+    const response = await api.put(`topicUsers`, body);
+
+    return response.data;
+  } catch (error) {
+    console.log(error)
+  }
+}

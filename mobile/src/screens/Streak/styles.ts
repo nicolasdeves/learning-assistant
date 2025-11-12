@@ -2,7 +2,12 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
-  title: { fontSize: 22, fontWeight: '700', marginBottom: 4, color: '#222' },
+  title: {
+    fontSize: 20,
+    color: '#333333',
+    marginLeft: 10,
+    fontFamily: 'sans-serif-light',
+  },
   subtitle: { fontSize: 14, color: '#666', marginBottom: 20 },
   month: {
     fontSize: 18,
