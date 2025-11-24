@@ -54,6 +54,7 @@ export function MyTopics() {
 
     const onSaveConfig = async () => {
         await updateTopicUser(googleUserId, selectedTopicId, selectedLevelId, selectedWeeklyGoal);
+        navigation.navigate("Home");
     };
 
     return (
