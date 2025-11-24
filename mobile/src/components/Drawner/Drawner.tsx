@@ -74,7 +74,7 @@ export function Drawer({ isOpen, onClose, onLogoff }: { isOpen: boolean, onClose
         <View style={{ marginBottom: 24 }}>
           <MenuItem label="Perfil" onPress={() => {navigation.navigate("Profile")}} />
           <MenuItem label="Meus tópicos" onPress={() => { navigation.navigate("MyTopics"); onClose(); }} />
-          <MenuItem label="Notificações" onPress={() => {}} />
+          {/* <MenuItem label="Notificações" onPress={() => {}} /> */}
           {/* <MenuItem
             label="Começar a ensinar"
             onPress={() => {}}

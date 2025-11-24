@@ -61,20 +61,21 @@ export function AvailableTopics({
           {topics.map(topic => {
             const randomEmoji = getRandomEmoji();
             return (
-              <Pressable
-                key={topic.id}
-                style={({ pressed }) => [
-                  styles.topicCard,
-                  pressed && {
-                    backgroundColor: '#C5E6FA',
-                    transform: [{ scale: 0.97 }],
-                  },
-                ]}
-                onPress={() => onSelectTopic(topic)}
-              >
-                <Text style={styles.topicEmoji}>{randomEmoji}</Text>
-                <Text style={styles.topicText}>{topic.name}</Text>
-              </Pressable>
+              <View key={topic.id} style={styles.topicCardContainer}>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.topicCard,
+                    pressed && {
+                      backgroundColor: '#C5E6FA',
+                      transform: [{ scale: 0.97 }],
+                    },
+                  ]}
+                  onPress={() => onSelectTopic(topic)}
+                >
+                  <Text style={styles.topicEmoji}>{randomEmoji}</Text>
+                  <Text style={styles.topicText}>{topic.name}</Text>
+                </Pressable>
+              </View>
             );
           })}
         </ScrollView>
