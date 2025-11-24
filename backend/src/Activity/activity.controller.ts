@@ -54,9 +54,6 @@ export class ActivityController {
       note = journalNotes.map(j => j.content).join('\n');
     }
 
-    console.log('note')
-    console.log(note)
-
     const prompt = `
         Preciso que gere uma atividade de ${topic?.name} de nível ${level?.name}. 
         A estrutura será a seguinte:

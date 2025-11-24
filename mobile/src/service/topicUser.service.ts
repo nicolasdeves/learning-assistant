@@ -51,7 +51,6 @@ export async function updateTopicUser(googleUserId: string, topicId: number, lev
       weeklyGoal
     };
 
-    console.log('updateTopicUser')
     const response = await api.put(`topicUsers`, body);
 
     return response.data;

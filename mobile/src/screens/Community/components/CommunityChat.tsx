@@ -72,7 +72,6 @@ export function CommunityChat() {
     };
 
     const fetchCommunityUserId = async () => {
-        console.log('entrou fetchCommunityUserId')
         const communityUser = googleUserId && await getCommunityUser(googleUserId, community.id);
         communityUser && setCommunityUserId(communityUser.id);
         communityUser && console.log(communityUser.id)
@@ -86,8 +85,6 @@ export function CommunityChat() {
 
     const handleSend = async () => {
         if (inputText.trim() && googleUserId && communityUserId) {
-            console.log('enviando mensagem...')
-            console.log(communityUserId)
             await sendMessage(communityUserId, inputText);
         }
 

@@ -39,9 +39,6 @@ export class AiController {
 
       const tip = this.aiService.generateContent(prompt);
 
-      console.log('tipppp')
-      console.log(tip)
-
       return tip;
     } catch (error) {
       console.log(error);

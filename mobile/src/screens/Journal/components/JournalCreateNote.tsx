@@ -19,7 +19,6 @@ export function JournalCreateNote() {
 
     const saveNote = async() => {
       const googleUserId = await getLoggedUserId();
-      console.log('entrou save note')
       googleUserId && await addUserJournalNote(text, topic.id, null, googleUserId);
       navigation.navigate("JournalNotes", { topic: topic })
 
