@@ -39,11 +39,13 @@ export class DefaultService<
     where: Where,
     include?: Include,
     orderBy?: Record<string, 'asc' | 'desc'>,
+    take?: number,
   ): Promise<Model[]> {
     return this.delegate.findMany({
       where,
       include,
       orderBy,
+      take,
     });
   }
   

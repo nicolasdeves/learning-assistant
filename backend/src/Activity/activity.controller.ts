@@ -8,6 +8,8 @@ import { ExerciseTypeService } from 'src/ExerciseType/exercise.service';
 import { AlternativeService } from 'src/Alternative/alternative.service';
 import { LevelService } from 'src/Level/level.service';
 import { TopicUserService } from 'src/TopicUser/topicUser.service';
+import { JournalService } from 'src/Journal/journal.service';
+import { take } from 'rxjs';
 
 @Controller('activities')
 export class ActivityController {
@@ -19,7 +21,8 @@ export class ActivityController {
     private readonly exerciseTypeService: ExerciseTypeService,
     private readonly alternativeService: AlternativeService,
     private readonly levelService: LevelService,
-    private readonly topicUserService: TopicUserService
+    private readonly topicUserService: TopicUserService,
+    private readonly journalService: JournalService
   ) {}
 
   @Get('/generate/topicUser/:topicUserId')
@@ -33,6 +36,27 @@ export class ActivityController {
     
     const USE_AI = true; //Indica se deve gerar uma nova atividade, ou buscar uma pelo ID (testes)
 
+    let note = '';
+
+    if (topicUser) {
+      const journalNotes = await this.journalService.getByConditions(
+        {
+          topicId: topicUser.topicId,
+          googleUserId: topicUser.googleUserId
+        },
+        undefined,
+        {
+          createdAt: 'desc',
+        },
+        3,
+      );
+
+      note = journalNotes.map(j => j.content).join('\n');
+    }
+
+    console.log('note')
+    console.log(note)
+
     const prompt = `
         Preciso que gere uma atividade de ${topic?.name} de nível ${level?.name}. 
         A estrutura será a seguinte:
@@ -43,6 +67,8 @@ export class ActivityController {
         Cada resposta (alternatives) vai ter um rótulo (label);
         Cada resposta (alternatives) vai ter um valor, identificador (value);
         Cada exercício vai ter um campo com o valor de resposta correta (correctAlternative) onde vai ter o value da alternative que está correta;
+        
+        Comentários do usuário feitos anteriormente, leve isso em consideração para fazer a atividade: ${note}
 
         Estrutura a ser seguida:
         {
@@ -82,6 +108,7 @@ export class ActivityController {
       }
     `;
 
+    console.log(prompt)
 
     if (USE_AI) {
       const generatedActivity: GeneratedActivity =

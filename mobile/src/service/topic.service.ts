@@ -55,3 +55,13 @@ export async function addTopic(name: string, createdByGoogleUserId: string) {
         return null
     }
 }
+
+export async function disableTopic(topicId: number) {
+    try {
+        const response = await api.delete(`/topics/disable/${topicId}`);
+        return response.data;
+    } catch (error: any) {
+        console.log(error)
+        return null
+    }
+}

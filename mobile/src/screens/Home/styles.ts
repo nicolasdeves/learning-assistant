@@ -58,10 +58,13 @@ export const styles = StyleSheet.create({
     fontFamily: 'sans-serif-light',
   },
 
+  topicCardContainer: {
+    position: 'relative',
+    marginRight: 15,
+  },
   topicCard: {
     backgroundColor: '#D9EEFA',
     borderRadius: 18,
-    marginRight: 15,
     width: 120,
     height: 140,
     justifyContent: 'center',
@@ -71,6 +74,29 @@ export const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 3 },
     elevation: 6,
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#FF4444',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+  },
+  deleteButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    lineHeight: 16,
   },
 
   topicEmoji: {
@@ -84,5 +110,16 @@ export const styles = StyleSheet.create({
     color: '#0A3D62',
     textAlign: 'center',
     paddingHorizontal: 10,
+  },
+  emptyStateContainer: {
+    marginTop: 15,
+    marginHorizontal: 25,
+    paddingVertical: 15,
+  },
+  emptyStateText: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });

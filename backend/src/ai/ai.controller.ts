@@ -27,12 +27,20 @@ export class AiController {
         },
       );
 
+      if (userTopics.length == 0) {
+        return 'Cadastre-se em um tópico'
+      }
+
       const randomTopic: any =
         userTopics[Math.floor(Math.random() * userTopics.length)];
+
 
       const prompt = `Gere uma dica simples de 1 linha de ${randomTopic.name} para uma pessoa de nível ${randomTopic.topicUser[0].level.name}`;
 
       const tip = this.aiService.generateContent(prompt);
+
+      console.log('tipppp')
+      console.log(tip)
 
       return tip;
     } catch (error) {

@@ -1,4 +1,4 @@
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { Alert, Image, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { assets } from '../../assets/assets';
 import { TopicResponse } from '../../interfaces/topic';
@@ -10,12 +10,14 @@ interface AvailableTopicsProps {
   topics: TopicResponse[];
   topicsCreatedByUser: TopicResponse[] | null; 
   onSelectTopic: (topic: TopicResponse) => void;
+  onDeleteTopic?: (topic: TopicResponse) => void;
 }
 
 export function AvailableTopics({
   topics,
   topicsCreatedByUser,
   onSelectTopic,
+  onDeleteTopic,
 }: AvailableTopicsProps) {
   const emojis = ['📘','🧠','📚','💡','📝','🎯','🚀','🔍','💬','💻','📗','📕','📙','📖','📄','📜','📑','🧾','✏️','🖊️','🖋️','🖍️','🗒️','🎓','🧩','🔭','🔬','🧪','📊','📈','📉','📎','🧷','🗂️','🗃️','📌','📍','📁','🗄️','🧮','📅','⏰','⭐'];
 
@@ -26,6 +28,24 @@ export function AvailableTopics({
 
   const handleAddTopic = () => {
     navigation.navigate("CreateTopic");
+  }
+
+  const handleDeletePress = (topic: TopicResponse) => {
+    Alert.alert(
+      "Confirmar exclusão",
+      `Tem certeza que deseja excluir o tópico "${topic.name}"? Esta ação não pode ser desfeita.`,
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: () => onDeleteTopic && onDeleteTopic(topic)
+        }
+      ]
+    );
   }
 
   return (
@@ -76,32 +96,50 @@ export function AvailableTopics({
           </View>
         </View>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.scroll}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 15 }}
-        >
-          {topicsCreatedByUser && topicsCreatedByUser.map(topic => {
-            const randomEmoji = getRandomEmoji();
-            return (
-              <Pressable
-                key={topic.id}
-                style={({ pressed }) => [
-                  styles.topicCard,
-                  pressed && {
-                    backgroundColor: '#C5E6FA',
-                    transform: [{ scale: 0.97 }],
-                  },
-                ]}
-                onPress={() => onSelectTopic(topic)}
-              >
-                <Text style={styles.topicEmoji}>{randomEmoji}</Text>
-                <Text style={styles.topicText}>{topic.name}</Text>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
+        {topicsCreatedByUser && topicsCreatedByUser.length > 0 ? (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.scroll}
+            contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 15 }}
+          >
+            {topicsCreatedByUser.map(topic => {
+              const randomEmoji = getRandomEmoji();
+              return (
+                <View key={topic.id} style={styles.topicCardContainer}>
+                  <Pressable
+                    style={({ pressed }) => [
+                      styles.topicCard,
+                      pressed && {
+                        backgroundColor: '#C5E6FA',
+                        transform: [{ scale: 0.97 }],
+                      },
+                    ]}
+                    onPress={() => onSelectTopic(topic)}
+                  >
+                    <Text style={styles.topicEmoji}>{randomEmoji}</Text>
+                    <Text style={styles.topicText}>{topic.name}</Text>
+                  </Pressable>
+                  {onDeleteTopic && (
+                    <TouchableOpacity
+                      style={styles.deleteButton}
+                      onPress={() => handleDeletePress(topic)}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <Text style={styles.deleteButtonText}>✕</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              );
+            })}
+          </ScrollView>
+        ) : (
+          <View style={styles.emptyStateContainer}>
+            <Text style={styles.emptyStateText}>
+              Nenhum tópico criado ainda
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );

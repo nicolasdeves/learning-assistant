@@ -5,7 +5,7 @@ import { AvailableTopics } from "./AvailableTopics";
 import { Tip } from "./Tip";
 import { Tools } from "./Tools";
 import { getLoggedUser } from "../../auth/authentication";
-import { getTopics, getTopicsCreatedByUser } from "../../service/topic.service";
+import { disableTopic, getTopics, getTopicsCreatedByUser } from "../../service/topic.service";
 import { TopicResponse } from "../../interfaces/topic";
 import { styles } from "./styles";
 import { makeNavigation } from "../../service/navigation.service";
@@ -53,6 +53,15 @@ export function Home() {
     userAlreadyHasTopic ? navigation.navigate("Learning") : navigation.navigate("RegisterTopic", { topic })
   }
 
+  const handleDeleteTopic = async (topic: TopicResponse) => {
+    if (topicsCreatedByUser) {
+      const updatedTopics = topicsCreatedByUser.filter(t => t.id !== topic.id);
+      setTopicsCreatedByUser(updatedTopics);
+    }
+
+    await disableTopic(topic.id)
+  }
+
   return (
     <Base>
       <ScrollView>
@@ -63,6 +72,7 @@ export function Home() {
             topics={topics}
             topicsCreatedByUser={topicsCreatedByUser}
             onSelectTopic={(topic) => redirect(topic)}
+            onDeleteTopic={handleDeleteTopic}
           />
         )}
 
