@@ -79,6 +79,7 @@ export function Input({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
+    paddingHorizontal: 2,
   },
   label: {
     marginBottom: 5,

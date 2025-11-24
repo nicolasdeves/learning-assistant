@@ -12,8 +12,6 @@ export class AiController {
   @Get('/tip/user/:googleUserId')
   async generateTip(@Param('googleUserId') googleUserId: string) {
     try {
-      console.log(googleUserId);
-
       const USE_AI = true;
 
       if (!USE_AI) {
@@ -31,8 +29,6 @@ export class AiController {
 
       const randomTopic: any =
         userTopics[Math.floor(Math.random() * userTopics.length)];
-
-      console.log(randomTopic);
 
       const prompt = `Gere uma dica simples de 1 linha de ${randomTopic.name} para uma pessoa de nível ${randomTopic.topicUser[0].level.name}`;
 

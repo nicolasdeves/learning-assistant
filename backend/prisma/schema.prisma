@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Topic {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  createdByGoogleUserId String?  @map("created_by_google_user_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 
   activities    Activity[]
   topicUser     TopicUser[]

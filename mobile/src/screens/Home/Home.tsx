@@ -5,7 +5,7 @@ import { AvailableTopics } from "./AvailableTopics";
 import { Tip } from "./Tip";
 import { Tools } from "./Tools";
 import { getLoggedUser } from "../../auth/authentication";
-import { getTopics } from "../../service/topic.service";
+import { getTopics, getTopicsCreatedByUser } from "../../service/topic.service";
 import { TopicResponse } from "../../interfaces/topic";
 import { styles } from "./styles";
 import { makeNavigation } from "../../service/navigation.service";
@@ -15,14 +15,20 @@ export function Home() {
   const [userName, setUserName] = useState<string>("");
   const [googleUserId, setGoogleUserId] = useState<string>("");
   const [topics, setTopics] = useState<TopicResponse[] | null>(null);
+  const [topicsCreatedByUser, setTopicsCreatedByUser] = useState<TopicResponse[] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const navigation = makeNavigation();
 
   useEffect(() => {
     fetchUser();
-    fetchTopics();
   }, []);
+
+  useEffect(() => {
+    if (googleUserId) {
+      fetchTopics();
+    }
+  }, [googleUserId]);
 
   const fetchUser = async () => {
     const user = await getLoggedUser();
@@ -32,8 +38,13 @@ export function Home() {
   };
 
   const fetchTopics = async () => {
+    if (!googleUserId) return;
+    
     const topics = await getTopics();
+    const topicsCreatedByUser = await getTopicsCreatedByUser(googleUserId);
+
     setTopics(topics);
+    setTopicsCreatedByUser(topicsCreatedByUser);
   };
 
   const redirect = async (topic: TopicResponse) => {
@@ -50,6 +61,7 @@ export function Home() {
         {topics && (
           <AvailableTopics
             topics={topics}
+            topicsCreatedByUser={topicsCreatedByUser}
             onSelectTopic={(topic) => redirect(topic)}
           />
         )}

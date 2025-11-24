@@ -16,6 +16,17 @@ export const styles = StyleSheet.create({
     marginLeft: 25,
   },
 
+  third_title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0A3D62',
+    marginLeft: 25,
+  },
+
+  add_button: {
+    marginRight: 15
+  },
+
   scroll: {
     marginTop: 10,
   },

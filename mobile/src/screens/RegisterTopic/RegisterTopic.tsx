@@ -63,7 +63,7 @@ export function RegisterTopic() {
                 {
                     levelOptions && (
                         <Select
-                            label="Nível"
+                            label="Escolha o nível que se encaixe ao seu objetivo"
                             options={levelOptions}
                             onValueChange={(levelId) => setSelectedLevelId(Number(levelId))}
                         />

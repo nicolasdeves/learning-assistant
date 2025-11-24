@@ -16,6 +16,7 @@ import { JournalCreateNote } from "./screens/Journal/components/JournalCreateNot
 import { JournalViewNote } from "./screens/Journal/components/JournalViewNote";
 import Streak from "./screens/Streak/Streak";
 import { MyTopics } from "./screens/MyTopics/MyTopics";
+import { CreateTopic } from "./screens/CreateTopic/CreateTopic";
 
 function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,6 +39,7 @@ function App() {
         <Stack.Screen name="JournalViewNote" component={JournalViewNote} />
         <Stack.Screen name="Streak" component={Streak} />
         <Stack.Screen name="MyTopics" component={MyTopics} />
+        <Stack.Screen name="CreateTopic" component={CreateTopic} />
       </Stack.Navigator>
     </NavigationContainer>
   );

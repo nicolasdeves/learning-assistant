@@ -69,7 +69,6 @@ export class TopicUserController {
 
   @Put()
   async updateTopicUser(@Body() body: Prisma.TopicUserUncheckedCreateInput) {
-    console.log('aa')
     try {
       const topicUser = await this.topicUserService.getOne({
         googleUserId: body.googleUserId,

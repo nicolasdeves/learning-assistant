@@ -36,10 +36,6 @@ export class CommunityUserController {
     @Param('googleUserId') googleUserId: string,
     @Param('communityId', ParseIntPipe) communityId: number,
   ) {
-    console.log('bbbbbbbbbbbbbbbbbb')
-    console.log(communityId)
-    console.log(googleUserId)
-    
     const communityUser = await this.communityuserService.getOne({
       googleUserId,
       communityId,

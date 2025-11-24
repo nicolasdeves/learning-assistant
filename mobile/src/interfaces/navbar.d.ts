@@ -15,6 +15,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Streak: undefined;
   MyTopics: undefined;
+  CreateTopic: undefined;
 
 
 JournalTopics: undefined;
